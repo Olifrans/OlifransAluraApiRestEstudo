@@ -24,12 +24,10 @@ namespace OlifransAluraApiRestEstudo.Controllers
             _mapper = mapper;
         }
 
-
         [HttpPost] //Criar recurso no sistema
         public IActionResult AdcionarFilme([FromBody] CreateFimeDto filmeDto)  //Ajuste "CreateFimeDtos" para que o cliente não precise esta enviando o Id
         {
-            Filme filme = _mapper.Map<Filme>(filmeDto); //Mapeamento usando AutoMapper.
-            
+            Filme filme = _mapper.Map<Filme>(filmeDto); //Mapeamento usando AutoMapper.            
             _filmeContext.Filmes.Add(filme);
             _filmeContext.SaveChanges();
             return CreatedAtAction(nameof(RecuperaFilmePorId), new { Id = filme.Id }, filme); // Código de status(201)--> Ok - Retornando o status da requisição e onde o recurso foi criado no formato Json
@@ -42,8 +40,6 @@ namespace OlifransAluraApiRestEstudo.Controllers
             return _filmeContext.Filmes; // Código de status(201)--> Ok - Retornando o status da requisição e onde o recurso foi criado no formato Json
         }
 
-
-
         [HttpGet("{id}")] //Retorna recurso do sistema por ID
         public IActionResult RecuperaFilmePorId(int id)
         {
@@ -54,8 +50,7 @@ namespace OlifransAluraApiRestEstudo.Controllers
                 return Ok(filmeDto); //Código de status (200)--> Ok - Retornando uma lista de livros no formato Json
             }
             return NotFound(); //Código de status (404)-->not found
-        }
-        
+        }        
 
         // PUT api/<FilmeController>/5
         [HttpPut("{id}")]
@@ -71,7 +66,6 @@ namespace OlifransAluraApiRestEstudo.Controllers
             _filmeContext.SaveChanges();
             return NoContent(); //Código de status (204)-->nocontet retornar uma resposta 204 Sem Conteúdo para uma operação pós-operação.
         }
-
 
         // DELETE api/<FilmeController>/5
         [HttpDelete("{id}")]

@@ -1,10 +1,6 @@
 ﻿using OlifransAluraApiRestEstudo.Models;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OlifransAluraApiRestEstudo.Data.Dtos
 {
@@ -24,7 +20,5 @@ namespace OlifransAluraApiRestEstudo.Data.Dtos
         public string Duracao { get; set; }
 
         public DateTime HoraConsulta { get; set; }
-
-
     }
 }

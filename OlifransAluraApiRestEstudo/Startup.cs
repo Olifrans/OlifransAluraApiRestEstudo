@@ -22,15 +22,12 @@ namespace OlifransAluraApiRestEstudo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-
             //Conexão DB
             services.AddDbContext<FilmeContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("OlifransAluraApiRConnection")));
 
             //AutoMapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
