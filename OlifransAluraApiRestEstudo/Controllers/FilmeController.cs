@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using OlifransAluraApiRestEstudo.Data;
 using OlifransAluraApiRestEstudo.Data.Dtos;
 using OlifransAluraApiRestEstudo.Models;
@@ -16,22 +17,19 @@ namespace OlifransAluraApiRestEstudo.Controllers
     {
 
         private readonly FilmeContext _filmeContext;
-        public FilmeController(FilmeContext filmeContext)
+        private readonly IMapper _mapper;
+        public FilmeController(FilmeContext filmeContext, IMapper mapper)
         {
             _filmeContext = filmeContext;
+            _mapper = mapper;
         }
 
 
         [HttpPost] //Criar recurso no sistema
-        public IActionResult AdcionarFilme([FromBody] CreateFimeDto filmedto)  //Ajuste "CreateFimeDtos" para que o cliente não precise esta enviando o Id
+        public IActionResult AdcionarFilme([FromBody] CreateFimeDto filmeDto)  //Ajuste "CreateFimeDtos" para que o cliente não precise esta enviando o Id
         {
-            Filme filme = new Filme //Criação de um objeto com um construtor implicito
-            {
-                Titulo = filmedto.Titulo,
-                Genero = filmedto.Genero,
-                Duracao = filmedto.Duracao,
-                Diretor = filmedto.Diretor,
-            };
+            Filme filme = _mapper.Map<Filme>(filmeDto); //Mapeamento usando AutoMapper.
+            
             _filmeContext.Filmes.Add(filme);
             _filmeContext.SaveChanges();
             return CreatedAtAction(nameof(RecuperaFilmePorId), new { Id = filme.Id }, filme); // Código de status(201)--> Ok - Retornando o status da requisição e onde o recurso foi criado no formato Json
@@ -52,15 +50,7 @@ namespace OlifransAluraApiRestEstudo.Controllers
             Filme filme = _filmeContext.Filmes.FirstOrDefault(filme => filme.Id == id);
             if (filme != null)
             {
-                ReadmeFimeDto filmeDto = new ReadmeFimeDto //Criação de um objeto com um construtor implicito
-                {
-                    Titulo = filme.Titulo,
-                    Genero = filme.Genero,
-                    Duracao = filme.Duracao,
-                    Diretor = filme.Diretor,
-                    Id = filme.Id,
-                    HoraConsulta = DateTime.Now
-                };
+                ReadmeFimeDto filmeDto = _mapper.Map<ReadmeFimeDto>(filme); //Mapeamento usando AutoMapper.
                 return Ok(filmeDto); //Código de status (200)--> Ok - Retornando uma lista de livros no formato Json
             }
             return NotFound(); //Código de status (404)-->not found
@@ -77,10 +67,7 @@ namespace OlifransAluraApiRestEstudo.Controllers
             {
                 Ok(_filmeContext.Filmes); //Código de status (200)--> Ok - Retornando uma lista de livros no formato Json
             }
-            filme.Titulo = filmeUpdateDto.Titulo;
-            filme.Diretor = filmeUpdateDto.Diretor;
-            filme.Genero = filmeUpdateDto.Genero;
-            filme.Duracao = filmeUpdateDto.Duracao;
+            _mapper.Map(filmeUpdateDto, filme); //Mapeamento usando AutoMapper.
             _filmeContext.SaveChanges();
             return NoContent(); //Código de status (204)-->nocontet retornar uma resposta 204 Sem Conteúdo para uma operação pós-operação.
         }
