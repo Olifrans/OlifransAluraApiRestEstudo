@@ -1,0 +1,284 @@
+Modulo 03 - Retornando dados
+
+
+02 - Retornando informações da API
+
+[00:00] Pessoal, vamos lá. Nesse vídeo vamos começar a criar o comportamento de recuperar informações do nosso filme, porque afinal não sabe ainda com certeza que estamos salvando esses dados.
+
+[00:12] Depois faz sentido querer consultar, pode ter essa liberdade de consultar um dado que tem cadastrado. Se quer criar uma nova ação, um novo comportamento nada mais válido do que criar simplesmente um novo método.
+
+[00:30] Assim, public void, não vai se preocupar nesse instante com isso, quero recuperar os filmes que estão cadastrados, eu quero recuperar as informações, a princípio o usuário não precisa me passar nenhuma informação.
+
+[00:43] Qual será o comportamento desse método? Eu quero simplesmente retornar aonde estão os filmes, meus filmes estão guardados na lista de filmes, ele vai reclamar certamente porque nós temos um retorno, se der “Alt + Enter” ele já sugere corrigir o título.
+
+[01:04] Com retorno para uma lista de filme, isso funciona sem nenhum problema, mas podemos ser um pouco mais espertos e se preparar para mudanças. “Como assim, Daniel, está muito estranho essa conversa”.
+
+[01:18] Se olhar a lista de filme é realmente o que declarou, mas se der um “Control + (clique com o botão esquerdo)” em list ele implementa algumas interfaces, como por exemplo, Ienumerável, IEnumerable pode simplesmente falar usando conceitos de polimorfismo que não vai necessariamente retornar uma lista de filme.
+
+[01:43] E sim um IEnumerable de filme, mas o que vai mudar na nossa execução? Não vai mudar nada na execução, mas se em algum momento não estiver retornando mais uma lista de filmes e sim outra classe se que implemente a interface.
+
+[02:01] Esse nosso método não vai quebrar, isso vai fazer diferença lá na frente, já fica antecipado para vocês, como isso vai ajudar. A princípio retorna nossa lista de filme.
+
+[02:14] Chama nosso end point, nosso caminho ‘/filme’, preciso explicitar qual é o verbo. Qual é a ação que eu estou querendo executar dentro do meu controlador, sabemos que o post é para criar um recurso no sistema.
+
+[02:31] Se eu quero recuperar um recurso no meu sistema, eu posso simplesmente utilizar o http, que sugere o get, faz sentido se eu quero recuperar uma informação eu quero dar um get ele vai retornar a minha lista de filmes.
+
+[02:50] Vamos executar nossa aplicação, vou abrir o post nós vamos clicar no mais e ele já vai abrir como padrão get, vamos ser preguiçosos e copiar a url e executar.
+
+[03:06] A mesma url para um get, mostra 200ok e não retornou nada, vamos cadastrar mais um, dei um send e ele exibiu, vou cadastrar mais alguns, Senhor doa Anéis 2, vamos dar get, Senhor dos Anéis repetido que coloquei.
+
+[03:31] Ele está cadastrando, vamos colocar uma duração diferente 112 minutos, mais um send, tem uma questão, não tem uma alguma maneira de diferenciar nossos filmes, cadastrei dois iguais, como diferencio?
+
+[03:54] Precisa ter alguma forma de diferenciá-los, precisa um identificador único, vamos implementar manualmente, sem se preocupar com questão de banco de dados, veremos mais adiante.
+
+[04:07] Como pode fazer isso? Da maneira antiga, como é que vai resolver esse problema? Pode simplesmente declarar campo privado, que ele vai ser o tipo int e vai ser id que começa com valor de um, por exemplo, sempre que adicionar um filme antes vem e fala que o filme foçme.id = id++.
+
+[04:29] Claro que dentro do nosso filme precisa – se der “Control + Alt + Enter” e der enter novamente, ele já vai gerar a propriedade id, então eu vou dar um recorte para colocar em cima e para manter o patrão vou deixá-lo como set sem ser um internal set que como ele colocou por padrão.
+
+[04:49] Se vier e reexecutar nossa aplicação, vou dar run novamente, vamos dar um list no nosso filme, perdemos tudo de novo.
+
+[05:03] Esse problema está inoportuno, vamos resolver em breve eu prometo para vocês. Então sempre que está reiniciando a nossa aplicação está perdendo os nossos dados.
+
+[05:11] Vamos resolver isso. Vamos cadastrar Senhor dos Anéis de novo, vamos enviar, vou enviar logo três de uma vez. Se der send e recuperar temos Senhor dos Anéis com id 1, Senhor dos Anéis com id 2 e assim por diante.
+
+[05:31] Caso coloque Senhor dos Anéis remake, por exemplo, der send vai aparecer com id 4 porque estamos incrementando-o quando está adicionando um filme, perfeito.
+
+[05:46] Estamos recuperando todos nossos filmes, mas seria interessante se tivesse a possibilidade de recuperar o filme individualmente, não deveria se preocupar em “eu quero recuperar todos os filmes para encontrar o que eu quero”.
+
+[05:59] Deveria inclusive tendo nosso id, como acabou de criar, ter a liberdade de recuperar um filme único sem se preocupar em trazer todos os outros, porque isso é desnecessário. E isso veremos no próximo vídeo, pessoal, então esse finaliza agora, estamos recuperando nossos filmes e eu vejo vocês no próximo e até mais.
+
+
+
+
+03 - Validando o retorno
+Segundo o REST e as boas práticas de criação de uma API, qual dos trechos de código abaixo melhor representa o retorno de um recurso do sistema?
+
+Selecione uma alternativa
+
+[HttpGet]
+public IEnumerable<Filme> RecuperaFilmes()
+{
+    //lógica de retorno
+}
+
+
+
+
+04 - Recuperando dados por id
+
+[00:00] Esse vídeo, pessoal, o que quero fazer? Nós vimos anteriormente que nós conseguimos recuperar todos os filmes. Mas seria interessante recuperar os filmes individualmente também, sem necessidade de carregar todos os outros na nossa máquina.
+
+[00:13] Ter de trafegar através da rede. Tem uma nova ação, novo comportamento de recuperar um filme por algum identificador, por algum critério específico, nós podemos simplesmente criar uma nova ação.
+
+[00:31] Vamos lá o público e nós já sabemos o que nós queremos retornar filme, um filme específico e podemos colocar RecuperarFilmesPorid.
+
+[00:49] Inclusive para ficar padrão do adiciona filme, recupera filmes, eu vou deixar sem infinitivo, vou deixar recupera filme e nós vamos recuperar esse filme.
+
+[01:05] Dentro vamos simplesmente retornar da lista de filmes, que tem o nosso filme em que ID que está recebendo do nosso usuário vai receber um identificador e tem que iterar por essa lista.
+
+[01:21] Então, para cada filme que tiver na nossa lista de filmes se o nosso filme.id for igual ao nosso id, nós retornamos esse filme, vamos lá, uma lógica bem simples.
+
+[02:00] Para cada filme do tipo filme na nossa lista de filmes se id desse filme for igual a id que recebi eu retorno esse filme, return filme;.
+
+[02:16] Nós sabemos, vem momento de reflexão, que quando nós vamos recuperar algum dado do nosso sistema, nós utilizamos por padrão http get.
+
+[02:26] Eu coloco httpGet, mas nós temos alguns probleminhas, ele só vai retornar algum filme se estiver dentro, se não retornar preciso eu preciso dar algum retorno de qualquer maneira.
+
+[02:39] Eu não posso retornar nulo, porque eu não encontrei esse filme no sistema, ele vai parar de reclamar, o problema é como é que o diferencio httpget da linha 38 do da linha 24? O que muda entre eles? O tipo do retorno, mas tem uma diferença que int recebe uma ID como parâmetro e como é que eu consigo falar que este httpGet recebe id e o outro não?
+
+[03:10] Simples, fácil e prático basta abrir parênteses e dentro eu falo que eu vou receber como parâmetro um Id e ele vai pegar o valor deste Id que vamos passar por dentro do parâmetro e vai colocar como dentro dessa variável desse parâmetro chamado Id.
+
+[03:31] Se eu vier mais uma vez e executar nossa aplicação, se eu abrir POST mais uma vez não tem mais nenhuma lista de filmes porque eu reiniciei a aplicação e cadastrar o Senhor dos Anéis.
+
+[03:47] Ou cadastrar algumas vezes e recuperar todos, eu tenho Senhor dos Anéis com Id 1, 2, 3 como eu não estou passando nenhum Id, ele está executando linhas 25 a 28 [2215-Aula3.4_RecuperandoDadosPorId_Imagem1]
+
+[04:00] Mas como que eu faço para passar Id, para eu poder passar, o parâmetro vai ser passado pela nossa URL de acordo com toda a regra de estruturação do REST ele diz que nós devemos passar um parâmetro que nós queremos buscar junto com a sua URL.
+
+[04:20] Vou abrir mais uma aba, executar um get só que para /filme, por exemplo, eu vou cadastrar mais um filme e vou colocar o Star Wars também, vou colocar aventura, outro diretor que George Lucas e duração tanto faz vou colocar 122 apenas para diferenciar.
+
+[04:39] Vou salvar o filme, dá um get em todos, reparam que eu tenho o Senhor dos Anéis com Id 4, se eu passar /filme/4 na URL, retorna o Senhor dos Anéis.
+
+[04:55] Se eu colocar Id 3, ele vai retornar O Senhor dos Anéis anterior, se eu colocar 2 retorna o anterior e assim por diante. Uma coisa que eu coloquei retornou Star Wars.
+
+[05:19] Tem uma maneira simples de retornar o filme passando identificador, sempre que passar o identificador, realizar um get para passar um Id, que é o número que está recebendo, vai cair nessa requisição, nessa rota que vai ser executada, se não passar cai na outra.
+
+[05:41] A diferença entre elas, por mais que esteja utilizando o mesmo verbo, está utilizando parâmetros de chamada diferentes; para finalizar em grande estilo vamos utilizar sintaxe fechada, não precisa de linhas 33 a 39.
+
+[06:00] Nós podemos falar que queremos retornar na nossa lista de filme firstOrDefault, ou seja, o primeiro elemento ou o que encontrar, ou algum padrão onde este elemento vai ser um filme e esse filme .Id tem que ter filme.id == id passado pelo nosso parâmetro.
+
+[06:20] E caso ele não encontre o default vai retornar nulo, para de executar, tem de retornar, certamente para o nosso código funcionar e dá run mais uma vez.
+
+[06:34] Se passar um, vamos cadastrar mais uma vez Star Wars, vamos voltar para o Senhor dos Anéis e vamos lá, tem o Senhor dos Anéis e Star Wars tem Id 1, O Senhor dos Anéis tem 2, se eu colocar /1 ele vai trazer o Star Wars.
+
+[06:58] Se colocar dois, Senhor dos Anéis e se eu colocar três retorna um valor default que no caso é nulo, se colocar ele trouxe “no contente”, não teve um retorno e não teve nenhum conteúdo no retorno que passou ali que esperávamos.
+
+[07:20] Consegue recuperar os filmes por ID. Por algum identificador único criado através do mesmo verbo uma implementação, um comportamento diferente quando passa algum identificador, só que precisa se organizar um pouco.
+
+[07:35] Repara que quando encontra algum filme, retornando status de 200, não encontra ele coloca “no content” mas não tem esse comportamento bonitinho.
+
+[07:47] Ainda em todo nosso código porque seria interessante começar a padronizar os tipos de retorno que temos, porque não se sabe ainda quando a pessoa for consumir se vai conseguir entender de maneira clara quando realmente não encontrou alguma coisa.
+
+[08:02] Ou encontrou, ou algo não foi permitido, precisamos padronizar os nossos retornos porque ainda está bem abstrato e se voltar no nosso código não está informando de maneira clara o que deve ser retornado para nosso consumidor.
+
+[08:17] Só que isso veremos no próximo vídeo de maneira mais calma. Eu vejo vocês lá, até mais.
+
+
+
+
+05 - Faça como eu fiz: Implementando a lógica
+A proposta desta atividade é prepararmos o código para retornarmos um Filme do nosso sistema baseado em seu id. Inicialmente, abra a sua classe FilmeController.
+
+Na classe, escreveremos o esqueleto do método:
+
+public Filme RecuperaFilmesPorId()
+{
+
+}COPIAR CÓDIGO
+Agora, precisamos, de alguma maneira, receber a informação sobre que Filme queremos retornar, ou seja, seu id. Para isso, iremos recebê-lo por parâmetro.
+
+public Filme RecuperaFilmesPorId(int id)
+{
+
+}COPIAR CÓDIGO
+Como estamos recuperando um recurso do sistema, a boa prática e convenções dizem que devemos utilizar o verbo GET. Então, adicione a anotação necessária e informe que receberá o parâmetro id via url.
+
+[HttpGet("{id}")]
+public Filme RecuperaFilmesPorId(int id)
+{
+
+}COPIAR CÓDIGO
+Por fim, retorne o elemento de nossa lista que possui o id correspondente.
+
+[HttpGet("{id}")]
+public Filme RecuperaFilmesPorId(int id)
+{
+ return filmes.FirstOrDefault(filme => filme.Id == id);
+}COPIAR CÓDIGO
+
+
+
+6 Recebendo parâmetros na requisição
+Como podemos enviar parâmetros através da requisição utilizando o verbo GET?
+Alternativa correta
+Através da anotação [HttpGet("{param}")].
+Alternativa correta! Podemos utilizar a própria anotação para isso.
+
+
+
+07 - Definindo o retorno das rotas
+[00:00] Pessoal, nesse vídeo nós vamos atualizar, deixar nos conformes o que deve retornar ou não, de acordo a requisição do usuário, porque por exemplo nós vamos fazer de trás para frente.
+
+[00:12] Nós temos o nosso httpget passando Id, onde encontra o filme retorna, vamos executar mais uma vez, só para refrescar a memória, se eu cadastrar alguns filmes como Senhor dos Anéis, mais uma vez, passar para Id 1, eu estou retornando então o status de 200ok.
+
+[00:33] A requisição foi bem-sucedida, mas e se não for, vimos que ele está retornando “no content”, apesar de a princípio fazer sentido, o ideal seria que falasse de forma mais clara que esse recurso não foi encontrado, então not found seria o mais adequado.
+
+[00:55] Queremos seguir os padrões no fim das contas e deixar sempre o mais entendível possível para quem for consumir também, então como é que fala que o recurso não foi encontrado? Vamos voltar no nosso código.
+
+[01:10] Tem o nosso filme está sendo encontrado ou não, e retorna de uma vez, vamos dividir declaração, vamos deixar em parte; nós temos um filme que a princípio poderá ser retornado. Então deixa eu parar e este filme está sendo guardado.
+
+[01:29] Pode ser nulo, se o nosso filme for diferente de nulo nós queremos retornar o um ok, como vimos, passando o nosso filme e esse ok não é uma mágica, é simplesmente uma chamada onde ele vai informar que a resposta foi ok.
+
+[01:52] Se não foi ok, o que faz? Retornamos um not found, então perfeito. Porém, not found e ok não são do tipo, filme. Óbvio. E qual é o tipo deles? Caso passar o mouse sobre ok ele é Object result, são um resultado da nossa ação, pode trocar de filme para esse retorno que queremos colocar que é uma Action result.
+
+[02:36] Repara que tudo funciona sem nenhum problema, vamos executar de novo, vamos voltar no nosso post, recadastrar o Senhor dos Anéis.
+
+[02:48] Vamos passar Senhor dos Anéis, repara 200 ok e se ele não existir, not found, está muito mais claro, título not found, o famoso status 404 de não foi encontrado e está claro que não foi encontrado, não que não tenha conteúdo a nossa resposta.
+
+[03:06] Voltando mais um pouco, tem o nosso recupera filmes que retorna toda a nossa lista de filmes, pode fazer retorna ok de filmes e vamos por enquanto voltar para aquela situação que eu tinha falado para vocês.
+
+[03:26] Precisa fazer também como fez antes, embaixo de retornar ‘public IActResult’ como eu falei lá na frente você vai entender o motivo da [ininteligível], mas vai retornar um ok de filmes. O que muda? Vamos ver.
+
+[03:42] Porque quando executar nossa aplicação de novo e criar um novo filme, vamos lá, o Senhor dos Anéis, eu vou dar um get em todos os filmes, ele dá 200, vamos reiniciar a aplicação e se eu não tiver nenhum filme? O que ele deveria retornar ?
+
+[04:02] Um not found na verdade não. Ele retorna o status de 200ok, porque de acordo com o padrão, arquitetura REST retorna ok porque a requisição foi bem-sucedida.
+
+[04:17] Mas não estava procurando por nada específico, o retorno foi dado que é uma lista de elementos de vazia, mas não estávamos procurando por nada específico, estávamos consultando se alguma coisa mesmo existia ou não.
+
+[04:29] O padrão nesse caso é retornar um 200 como está sendo feito, e por último, mas não menos importante, temos também nosso adiciona filme e o que ele vai retornar, pessoal?
+
+[04:48] Quando criarmos esse filme precisa retornar não só o status dele, mas também precisa algumas informações de acordo com padrão arquitetural, onde esse filme foi criado.
+
+[05:01] Temos além do not found também o createAtAction, ele retorna o status dependendo se foi ok ou não a nossa requisição. E além disso ele vai retornar em qual lugar - se olhar no nosso cabeçalho não estava mostrando onde ele está sendo criado.
+
+[05:26] E a ideia do CreateAtAction é mostrar além do status da requisição, onde este recurso foi criado esta é boa prática, esse o padrão e como é que faz isso? Vamos passar para ele qual é o método que quer executar.
+
+[05:42] Nós queremos executar nameof recupera filmes por Id, “o que você está fazendo, isso não faz sentido”. Calma lá, vamos preencher todos os parâmetros primeiro.
+
+[05:57] E eu explico para vocês, new {Id = filme.id} e por último vamos passar esse filme que recebemos. Mas vamos confiar por enquanto eu explico, coloca IActionResult e vamos executar.
+
+[06:22] Se vier dentro do nosso post, criar um novo filme, tem no cabeçalho em regras tem Location, que informa exatamente o caminho que precisa acessar para recuperar as informações.
+
+[06:40] Se copiar url Id 1 e colar nós devemos recuperar este recurso recém-criado, então sempre vai retornar qual é o caminho para esse recurso que estamos criando. Mas vamos voltar, eu não esqueci de vocês.
+
+[06:57] O que isso quer dizer: return CreatedAtAction(nameof(RecuperaFilmesPorId), new { Id = filme.Id }, filme);.
+
+[06:58] O created action está falando qual é o caminho, qual é a ação que criou este recurso, se for olhar parâmetro por parâmetro, nós precisamos passar para ele, qual é a action que precisa executar para recuperar esse recurso. Então como nós queremos recuperar esse recurso?
+
+[07:21] No nosso post, qual é a ação que executa? Quando passa um filme e um Id, está executando uma ação de recuperar o filme por Id, então nós passamos o nome dessa action que é o name of, está passando o nome dela e a ação que é recupera filmes.
+
+[07:37] Porque nós queremos essa lógica esteja sendo executada para recuperar o nosso location, queremos no segundo parâmetro passar nele o valor na rota, o valor que está passando na rota no caso é só nosso Id.
+
+[07:55] Certo, nossa Id está passando um que é igual o ID do filme que acabou de criar, então ´filme.Id´ que atribui anteriormente e por último passa também o valor, o object em si que estamos querendo, que estamos tratando.
+
+[08:13] E qual é recurso que está tratando? É esse filme que recebemos que está passando para action também, quando estamos criando um filme, no final ele foi criado e pode ser recuperado através dessa action que é recupera filme por Id.
+
+[08:30] Com este Id que foi passado e gerado para ele com este recurso. Seguindo todas boas práticas nas operações de criação e leitura, quando cria um recurso, indica qual é a localização que ele foi criado e também retorna qual foi o recurso criado.
+
+[08:51] Quando recupera dá status 200 caso exista ou não, dependendo da nossa lista, vazia, vai estar sempre vazia ou com um elemento e também consegue quando eu passo Id existente no status 200, quando inexistente o status fica not found, esses detalhes de como está definindo o retorno das nossas rotas precisamos pensar.
+
+[09:21] Todo momento que cria algum dado e reinicia nossa aplicação os dados estão sendo perdidos, porque não estamos persistindo, não estamos guardando-os em um lugar específico, está guardando na memória.
+
+[09:32] Quando reinicia essa aplicação perde tudo e no próximo vídeo vamos começar a entender como conecta nossa API a um banco de dados, para que consiga persistir e recupera-los posteriormente. Isso vai ficar para o próximo vídeo, eu vejo vocês lá e até mais.
+
+
+
+
+
+
+
+
+08 - Qual deve ser o retorno?
+
+João enviou uma requisição para a API procurando por um recurso específico, porém, o recurso procurado não foi encontrado. Qual dos códigos abaixo melhor retrata o status de "não encontrado"?
+
+Selecione uma alternativa
+404
+
+
+
+
+
+
+09 - Seguindo as boas práticas
+Quando criamos um recurso novo no sistema através do verbo POST, qual é a convenção do que deve ser retornado caso a requisição tenha sido efetuada com sucesso?
+
+Selecione uma alternativa
+
+201 (Created) e a localização de onde o recurso pode ser acessado no nosso sistema.
+Alternativa correta! Além de informarmos que o recurso foi criado, é importante informarmos onde podemos localizá-lo.
+
+
+
+
+
+10 - O que aprendemos?
+Nessa aula aprendemos:
+
+Como recuperar informações da API.
+A finalidade do verbo GET.
+Como enviar parâmetros através da URL de requisição.
+Como filtrar recursos para retornar para o usuário.
+Como devemos retornar as informações para o usuário com base no tipo de requisição.
+
+
+
+
+
+
+
+
+
+
+
+
+

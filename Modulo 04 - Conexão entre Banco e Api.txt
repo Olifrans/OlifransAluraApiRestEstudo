@@ -1,0 +1,410 @@
+01 - Projeto da aula anterior
+PRÓXIMA ATIVIDADE
+
+Caso queira, você pode baixar aqui o projeto do curso no ponto em que paramos na aula anterior.
+
+
+02 - Conectando ao Banco de Dados
+
+[00:00] Pessoal, o que precisamos fazer primeiro nesse vídeo? Nós precisamos de alguma maneira de comunicar a nossa aplicação, nossa API, ao banco de dados, mas como é que vamos conseguir fazer isso?
+
+[00:11] Precisa ter alguma maneira de estabelecer algum tipo de conexão para que nossa API consiga se comunicar, de preferência programaticamente para que consiga fazer isso de maneira mais simplificada.
+
+[00:24] Como é que nós vamos fazer isso? Vamos olhar o nosso código e nos momentos em que está executando alguma ação, como particionar o filme, retornar um filme; precisa fazer a partir da nossa base de dados.
+
+[00:39] Estamos levantando alguns problemas, precisa ter essa conexão com banco, ter essa tabela criada lá dentro, não vamos nos preocupar muito em como o banco de dados funciona porque não é o foco desse curso, mas de início vamos focar na questão da conexão.
+
+[00:53] Como eu chego e falo “aplicação API se conecte com uma SQL?” De início precisa adicionar alguns pacotes necessários para isso. E no caso vai utilizar o famoso nuget, se vier no nosso Visual Studio na parte de ferramentas.
+
+[01:15] Pode chegar no gerenciador de pacotes do nuget para a solução, vamos querer instalar, vamos em procurar não instalado, ele tem essa pegadinha. E nós vamos querer instalar entityFrameworkCore, vamos instalar na versão 5.0.5.
+
+[01:38] Caso você esteja fazendo esse curso e tenha nova versão, estamos utilizando a 5.0.5, vou marcar a versão, projeto que utilizo, vai instalar, dá um ok também, aceitar e também o outro pacote que vai instalar é o Microsoft.EntityFrameworkCore.Tools, já está marcado, vamos instalar também ok, aceitar.
+
+[02:08] Como vai fazer uma conexão com o banco MySQL, precisa também instalar quase o mesmo nome só que antes MySQL.EntityFrameworkCore. Esse pacote é necessário para que consiga abrir uma conexão utilizando entityFrameworkCore.
+
+[02:29] E com MySQL, esses são os pacotes necessários que vai utilizar neste momento e vai ter acesso aos imports necessários para fazer isso e como é que começa? Estou pregando sempre a questão de organização dentro do nosso projeto.
+
+[02:48] Vamos seguir sendo organizados, vamos criar uma pasta de data, de dados, como está com padrão de nome de pastas em inglês, nome da pasta data, vamos criar dentro uma nova classe que vai ser responsável por ter esse controle de contexto entre a nossa aplicação e o banco de dados.
+
+[03:15] Bem fácil, a nossa nova classe vai chamar ela de FilmeContext, porque afinal ela está sendo responsável por toda essa parte de contexto entre nossa aplicação e o banco de dados, public class FilmeContext para falar que ele é efetivamente um contexto está se comunicando entre nossa API e o banco de dados.
+
+[03:40] Precisa falar que ele é um DBContext, coloca na linha da “Alt + Enter” e ele vai sugerir: use Microsoft, simplesmente coloca e faz o importe. Nós criamos o nosso construtor.
+
+[04:00] Pode até utilizar o atalho do Visual Studio e vai criar nosso construtor, vai receber como parâmetro as opções - o que quero criar, precisa receber as opções contexto, DbContextOptions e qual o contexto estamos trabalhando?
+
+[04:20] Contexto do filmeContext, são as nossas opções. Mas não vai se preocupar com elas, só estamos recebendo esses parâmetros, essas opções.
+
+[04:35] Lembra dos cursos de orientação por objeto, vamos passar esse parâmetro para o Construtor do DBContext efetivamente, não precisa mais se preocupar com esse construtor já está tudo definido porque o Construtor da classe DBContext vai fazer esse papel para nós.
+
+[04:52] Teremos uma propriedade que vai ser do tipo DBset, ele é o nosso conjunto de dados do banco que vai conseguir fazer de maneira bem encapsulada, sem se preocupar com o acesso a esse banco de dados DBSet.
+
+[05:11] Vai ser de um filme, vai ser o objeto que queremos mapear e acessar dentro do nosso banco e pode chamar essa propriedade de Filmes, com a letra maiúscula, porque é uma propriedade.
+
+[05:22] Seguindo a convenção do CSharp, vamos colocar nosso get get; set, agora dá um “Alt + Enter” e consegue estabelecer o nosso modelo aqui dentro. Tem um detalhe ainda, que precisa atentar, se quisermos nos conectar a um banco de dados na nossa aplicação, precisa saber algumas coisas.
+
+[05:53] Como, por exemplo, onde está esse banco de dados? Eu preciso de algum tipo de autenticação para fazer isso? Sim. E como é que eu faço isso? Nesse momento precisa fazer o que precisa criar a nossa string de conexão com o banco.
+
+[06:09] Que vai informar qual é o endereço desse banco. Qual é o usuário, qual é a senha, qual é o banco em si de Dados que quer utilizar e como é que faz isso? Vamos definir através do AppSettingsJson onde definiremos algumas configurações para nossa aplicação.
+
+[06:27] E uma delas vai ser a nossa lista de Strings de conexão, já até sugere o nosso ConnectionStrings. Vamos criar FilmeConnection, para ter o mesmo padrão de nome de filme.
+
+[06:44] E qual vai ser o valor, como é que preenche? Bem simples, qual o servidor queremos acessar? O servidor onde está executando nosso banco, na nossa própria máquina e para fazer essa referência escreve localhost;.
+
+[07:03] Qual é o nome do banco que quer criar, acessar através da nossa API, vamos chamar de filmeDb, você pode dar o nome que você quiser também, mas eu estou tentando manter um padrãozinho.
+
+[07:16] Qual usuário do banco? Quando definimos o padrão, ele cria como root, qual é o password, é a que você definiu lá no momento da instalação do MySQL no segundo vídeo, senha é root, defini também.
+
+[07:32] Por fim, mas não menos importante, eu preciso utilizar string de conexão de alguma maneira, eu preciso falar para minha aplicação, API, que quando ela iniciar eu quero utilizar assistente de conexão para abrir uma conexão com o banco de dados.
+
+[07:50] Em qual dessas classes se olhar consegue fazer um startup, definir uma configuração de inicialização, exatamente no nosso. E como é que faz isso? Queremos configurar um serviço de acesso ao banco.
+
+[08:09] Nós já temos ConfigureService, dentro dele nós podemos fazer essa configuração de utilizar string do banco e fazer essa conexão, vamos colocar services.add - quero adicionar um contexto de banco de dados.
+
+[08:29] E qual contexto que quer adicionar? Em nosso filme, mas precisa passar algumas opções, ainda algumas configurações e quais são as opções?
+
+[08:40] Essas opções são de querermos utilizar uma SQL, ´UseMysql´ e para ele vamos passar a nossa string de conexão, como é que pega string de conexão? Podemos pegá-la através da configuração, nesse serviço, interface de configuração, a responsável por carregar nossas configurações.
+
+[09:12] Foram definidas no nosso arquivo de configurações e para fazer isso é bem simples. Coloca Configuration.GetConnectionString e qual conexão queremos pegar?
+
+[09:26] Uma string chamada Filme Connection filme Connection coloca o ponto-e-vírgula e ele está reclamando só dos nossos imports, dou “Alt + Enter” utilizando nosso filmeContext e a MySQL, dá um “Alt + Enter” para utilizar o MicrosoftFrameworkCore.
+
+[09:49] A princípio tudo está funcionando e se executar nossa aplicação o que que vai acontecer? Está executando e a princípio vou abrir meu abrir meu CMD, o que que vai acontecer?
+
+[10:03] Ela executou. Mas como consegue gravar o dado um filme, da nossa aplicação que está mandando para o nosso post para o nosso banco de dados, precisa ainda informar o banco como deve gravar essas informações.
+
+[10:19] Porque estamos utilizando uma lista estática e precisa utilizar esses métodos do nosso DBContext para salvar esses dados e recuperá-los também dentro do banco.
+
+[10:31] Antes de finalizar esse vídeo mais uma vez caso você esteja utilizando Linux eu vou deixar uma atividade extra, mostrando como você pode instalar os pacotes para ter o mesmo progresso desse vídeo. Como você não está utilizando Linux, você não tem a aba do nuget.
+
+[10:48] Conseguiremos resolver isso também. Vejo vocês no próximo vídeo. Faremos esse mapeamento de informações da nossa API para banco de dados, e até mais.
+
+
+
+
+
+
+03 - Para saber mais: Instalando pacotes Nuget no Linux
+Como dito em vídeo, a proposta desta atividade será ilustrar como instalar pacotes do NUGET utilizando o Linux como ambiente de desenvolvimento.
+
+1- Será necessário acessar o diretório de seu arquivo .csproj através do comando cd. Por exemplo, cd caminho/do/projeto/.
+
+Acessando o diretório através do terminal
+
+2- Execute os comandos para instalar os pacotes necessários:
+
+dotnet add package Microsoft.EntityFrameworkCore --version 5.0.5COPIAR CÓDIGO
+dotnet add package Microsoft.EntityFrameworkCore.Tools --version 5.0.5COPIAR CÓDIGO
+dotnet add package MySql.Data.EntityFrameworkCore --version 5.0.3COPIAR CÓDIGO
+Execução do comando de instalação do pacote do terminal
+
+ 
+
+
+
+
+
+
+4 - Papel do DBContext
+Qual das alternativas abaixo melhor representa o papel do DbContext?
+
+Selecione uma alternativa
+Abstrair a lógica de acesso ao banco de dados.
+
+
+
+
+
+
+05 - Gerando a primeira migration
+[00:00] Então, pessoal, nesse vídeo nós temos nossa conexão com o banco, mas nós precisamos de alguma maneira que a nossa informação recebida de um filme, como por exemplo, o nosso JSON que está guardado na nossa listinha do corpo da nossa requisição.
+
+[00:14] Precisamos saber de alguma forma como o banco vai conseguir guardar isso, que precisa sair de um lado para o outro, mas como é que vai conseguir fazer o banco guardar essas informações? E também inicialmente se abrirmos nosso MYSQL Workbench.
+
+[00:31] Que instalamos anteriormente. Se entrar no nosso banco, executando comando show databases que nada mais é do que listar os bancos criados aqui dentro do nosso serviço, do nosso gerenciador de banco de dados.
+
+[00:46] Vamos ver que nós temos o information scheme, Mysql a performance esquema e Sys, mas nós não temos o que o nosso filmeDB que é o banco que queremos utilizar.
+
+[01:05] Como vamos ensinar ao banco como ele deve guardar essas informações? Ainda tem um detalhe bem importante, nós temos nossa lista de propriedades, propriedades dentro da nossa classe de filme e nós precisamos informar como essas propriedades devem ser mapeados na verdade dentro desse banco.
+
+[01:31] A boa notícia é que todas as anotações que estamos utilizando já vão ajudar, mas precisamos fazer algumas alterações. Como por exemplo o nosso Id ele vai ser nossa chave de identificação então nós devemos utilizar essa anotação key.
+
+[01:50] E como ele é nossa chave, é o nosso identificador, ele também é um parâmetro que deve considerar como obrigatório - required. E agora o que eu quero fazer? eu quero falar CSharp, .NET pegue os campos, essas propriedades e mapeia ela para o banco de dados.
+
+[02:09] Como é que consegue fazer isso? Será que eu preciso utilizar MySQL manualmente e criar isso?
+
+[02:15] Não. Tem uma maneira muito mais fácil e prática e como é que vai fazer isso? O próprio Entity Framework que estamos utilizando, como essa abstração para acessar o banco de dados, consegue fazer isso. Se vier em ferramentas e no nosso gerenciador de pacotes do nuget.
+
+[02:33] Porém, agora clicaremos em console do gerenciador de pacote, ele vai abrir embaixo para nós. Mas o comando que vamos utilizar e conseguir fazer utilizando a própria sintaxe como um todo do CLS do .NET, vamos utilizar o comando chamado Add-Migration, o que passa para esse comando?
+
+[03:03] Qual o nome dessa migração, como vai identificar o que está fazendo com o banco de dados? Então, pode colocar alguma informação por exemplo como CriandoTabelaDeFilme, executar, repara que quando aperta enter o nosso código como um todo está sendo buildado.
+
+[03:26] O seu código tem que estar funcionando, ele tem que estar compilável, para esse comando funcionar, veja o que ele gerou para nós, uma pastinha migrations automaticamente e dentro dela nós temos dois arquivos.
+
+[03:41] Se for olhar o que ele já até abriu para nós, ele mostra que essa migration, esse comando está executando o seguinte comando: ele está criando a tabela de filmes, ou seja, ele gerou todo esse código automaticamente [2215-Aula4.5_GerandoaPrimeiraMigration_Imagem2]
+
+[03:56] Através desse comando, onde a tabela de filmes tem que possuir o campo Id, título, diretor, gênero, duração e ele já fez essa conversão automática, Id é um tipo inteiro, ele deve ser o identificador; o título ele tem que ser do tipo string.
+
+[04:15] Ele vai converter para um texto, string para texto, ele colocou um varchar e um inteiro também. Já conseguimos utilizar esse mapeamento automático do nosso modelo para o banco de dados.
+
+[04:30] Então, conferiu que a é o que realmente queremos fazer. Queremos criar os campos de linha 14 a 18, para uma tabela de filmes dentro do nosso banco de dados e agora precisa informar que nós queremos realmente aplicar essa mudança.
+
+[04:43] E como nós fazemos isso? Com o comando update-Database, dá um enter, está buildando mais uma vez. Agora ele apareceu com o done e o que vai acontecer? Se olhar aqui mais uma vez no Workbench e executar uma Quary.
+
+[05:01] Repara que ele criou o nosso filmeDB, se utilizar o comando use filmeDB; e executar, nós estamos agora utilizando esse banco, se executar o comando show tables para listar as tabelas que tem dentro desse banco vai aparecer a nossa tabela de filmes e nós podemos ir um pouco mais além e vamos dar um describe nessa tabela de filmes.
+
+[05:26] Para listar da maneira que esperamos e nós temos nosso campo de Id, título, gênero, diretor e duração seguindo os nossos tipos que estávamos utilizando lá dentro do modelo do nosso código CSharp.
+
+[05:43] Não tivemos trabalho nenhum, só precisamos utilizar os nossos comandos do nosso modelo já foi utilizado para fazer essa conversão; já temos o nosso banco com conexão, a tabela e tudo criado podemos finalmente adicionar algum dado dentro do nosso banco. Porém, isso faremos no próximo vídeo, eu vejo vocês lá. Até mais.
+
+
+
+
+
+ 06 - Para saber mais: Gerando migrations no Linux
+
+Como falamos, a proposta desta atividade será ilustrar como gerar suas migrations utilizando o Linux como ambiente de desenvolvimento.
+
+1- Será necessário acessar o diretório de seu arquivo .csproj através do comando cd. Por exemplo, cd caminho/do/projeto/.
+
+Acessando o diretório através do terminal
+
+2- Execute o comando para instalar o dotnet ef tools:
+
+dotnet tool install --global dotnet-efCOPIAR CÓDIGO
+3- Execute o comando de criação de migration:
+
+dotnet ef migrations add FilmeMigrationCOPIAR CÓDIGO
+4- Aplique as mudanças no banco de dados:
+
+dotnet ef database updateCOPIAR CÓDIGO
+ DISCUTIR 
+
+
+
+
+07 - A importância das migrations
+Quais são as principais vantagens da utilização de migrations neste nosso primeiro cenário de utilização?
+
+A possibilidade de conferir se o que vamos criar no banco está conforme esperamos.
+Gerar o banco e tabelas de maneira programática.
+
+
+
+08 Escrevendo e lendo dados no banco
+[00:00] Pessoal, temos a conexão da tabela, tudo certinho criado lá dentro eles precisa finalmente adicionar e recuperar esses dados no banco, para isso primeiramente precisamos limpar parte desse código, não queremos mais essa lista de filmes.
+
+[00:15] Nós não estamos mais definindo Id manualmente, o banco está resolvendo e vamos quebrar em alguns pontos nosso código e limpar onde está quebrado. Vamos tirar filmes e também linha 31. Pronto. Tiramos as referências que estávamos utilizando na nossa lista.
+
+[00:33] Como faz para utilizar o banco, como é que faz para acessar o banco, inserir alguma informação, recuperar alguma informação? Simples, pessoal, vamos utilizar o nosso contexto.
+
+[00:44] Que tem dentro um conjunto de dados que se refere aos nossos filmes, que estamos chamando-o de filmes, nós precisamos dentro do nosso controlador criar um campo.
+
+[00:59] Onde teremos do tipo FilmeContext, também nós vamos inicializá-lo com o nome contexto que é um bom nome, assim _context.
+
+[01:12] Precisa inicializá-lo, fazendo via construtor, então setor “Tab” duas vezes, coloca no nosso FilmeContext, por fim coloca o nosso campo, nosso Field _context = contexto; que está inicializando, basta dar um “Alt + Enter” para ele fazer a utilização do nosso FilmeContext.
+
+[01:43] Vou fazer import em cima, agora temos nosso FilmeContext inicializado e vamos utilizá-lo para acessar, guardar informações no banco e recuperar. Estamos recebendo um filme, a lógica não mudou e eu quero adicionar esse filme ao meu banco utilizando o contexto.
+
+[02:07] O contexto vai tirar meu conjunto de dados de filmes que declaramos, os nossos filmes, se você tiver dado outro nome vai ser outro nome, então nosso contexto de filme nós queremos adicionar o nosso filme. “Só isso, Daniel?”
+
+[02:25] Só isso e ele vai adicionar o nosso banco. Para recuperar os filmes no nosso se recupera filmes nós vamos executar o contexto _context.Filmes, que acessaremos todos os filmes, quando acessa a propriedade FilmeContextcs.
+
+[02:41] Já estava em todo o nosso conjunto de dados e por fim já tem grande parte da lógica, basta utilizar contexto filmes, queremos recuperar o primeiro ou nulo se não encontrar o primeiro da nossa lista, simples assim e como é que executa?
+
+[03:03] Sem problemas, sem mistérios, daremos um Created enquanto ele está subindo repara que a nossa lógica não mudou, aqui do CreatedAtAction porque continua querendo utilizar linhas 36 a 45.
+
+[03:14] Para retornar id, para retornar qual é o método que quer executar; para encontrar um filme por Id, não mudou nada em relação a isso e com o nosso código em execução vamos abrir o nosso post.
+
+[03:27] E vamos executar um post para o Senhor dos Anéis, se eu der um run e send, ele criou. E se eu tentar dar um get com o header que ele me retornou, vamos lá, ele deu um 404.
+
+[03:49] Por que que ele não encontrou meu filme? Significa que meu filme está nulo, para ele retornar not found, significa que de alguma maneira ou ele não encontrou, ou o filme não foi inserido.
+
+[04:02] Vamos testar, adicionar um filme de novo para ver se encontra uma resposta, vou executar de novo e deu zero, o identificador deveria ser o único, então não está adicionando o filme.
+
+[04:16] Isso é como se fosse sempre a primeira vez, como é que resolve isso, é uma questão bem simples, depois que eu adiciono algum dado ao banco, eu preciso informar que eu quero realmente salvar, executar as operações de salvar, guardar o estado dela e como é que eu faço isso?
+
+[04:32] Executo o meu contexto com SaveChanges e ele vai se salvar essa alteração efetivamente no banco de dados, eu vou parar, vou executar de novo, voltar no nosso post, enviar o Senhor dos Anéis mais uma vez, repara que ele salvou.
+
+[04:52] Se der um get no zero ele está dando not found, exatamente salvou com Id 1, ele está respeitando um padrão de começar com um e a nossa location está com um também. Coloca na Url 1 e ele está recuperando.
+
+[05:09] Se tentar salvar algum outro filme, por exemplo, Star Wars mais uma vez, estou bem criativo para nome de filme.
+
+[05:16] Vou colocar o outro diretor, George Lucas, vamos deixar ainda com aventura e a duração de cento e trinta e dois minutos, se enviar agora nós temos Id 2, nós temos header com o filme ´/2´, se acessar olha o que que acontece, nós estamos recuperando nosso Star Wars também.
+
+[05:36] Se o filme não existir, vamos colocar, vimos que está funcionando, mas tem que colocar por exemplo /3, retorna not found e no nosso get para todos os filmes, dou send e ele me retorna todos os filmes que estão cadastrados de maneira super prática consegue salvar os dados no banco sem nenhum problema.
+
+[05:58] E recuperar eles também; um outro detalhe que eu falei para vocês numa aula passada é o seguinte: lembra daquele enumerável que eu falei para vocês, é possível ter nesse caso nós retornarmos um enumerável de filme.
+
+[06:15] Não vai ser mais um return de ok, vai ser só o retorno de contas de filme, se reexecutar a nossa aplicação e dar um get de novo - inclusive a prova de que estamos guardando os dados - tem que recuperar todos os filmes cadastrados.
+
+[06:37] Observa o que está acontecendo. Nosso filme Senhor dos Anéis continua retornando e o Star Wars também, legal. Como seguimos? Você está adicionando filmes, está recuperando filmes, mas precisa ainda ir um pouco além.
+
+[06:53] E se eu quiser cadastrar Star Wars com o nome errado como é que eu consigo corrigir essa informação? Ou agora não quero mais isso na base, como é que eu faço para apagar? Vamos descobrir isso no próximo vídeo, eu vejo vocês lá e até mais.
+
+
+
+
+09 - Utilizando o DbContext para escrita
+Qual das sintaxes abaixo é a correta para adicionarmos um objeto mapeado no banco através do DbContext e salvarmos essa operação?
+
+_context.Filmes.Add(filme);
+_context.SaveChanges();
+
+
+
+10 - Atualizando e removendo dados
+[00:00] Precisamos ter alguma maneira de atualizar, alterar a informação de um filme cadastrado e também de remover. É importante se tiver cadastrada uma informação errada, podemos alterar.
+
+[00:11] Ou se não tiver mais interesse em um filme poder remover da minha base. Como faremos isso? Se criarmos implementar um novo comportamento, criar uma nova ação dentro da nossa rota de filme, nosso /filme.
+
+[00:25] Nós devemos criar um novo método dentro do nosso controlador, queremos ter algo do tipo public IActionResult, queremos retornar alguma informação para nosso usuário, algum resultado da ação que foi executada e eles podem por exemplo colocar atualiza filme.
+
+[00:44] E como é que vai atualizar o filme? Simples, vai primeiro recuperar o filme que está querendo atualizar e depois atualiza, mas “como assim Daniel, está um pouco abstrata a ideia”.
+
+[00:59] Primeiro precisa identificar qual é o filme que quer atualizar, bom como é que está identificando um filme na nossa base? Está fazendo a identificação através do nosso Id e como é que eu posso receber esse Id?
+
+[01:12] Vimos com o nosso http get pegar filmes por Id, nós podemos enviar esse Id através do nosso caminho, posso simplesmente colocar anotação de um http. E se eu quero não mais criar um novo recurso nem recuperar o recurso do banco da minha base.
+
+[01:34] Eu estou querendo atualizá-lo, eu posso utilizar o http put, que é o verbo específico para atualizações de algum recurso dentro do nosso sistema e eu quero receber também um Id, então coloca [httpPut(“(id)”)].
+
+[01:55] Assim como anteriormente, eu posso colocar, estou recebendo um id e eu preciso recuperar esse filme pelo seu Id, poderíamos simplesmente dentro desse atualiza filme, nós vamos recuperar o filme em que ele vai ser o nosso _Context.fimes.FirstOrDefault.
+
+[02:21] Podemos recuperar esse filme. Onde o seu ID tem que ser igual ao Id recebendo (filme => filme.Id == Id); e reparte o mesmo comportamento que tem dentro do nosso recuperar filme por Id.
+
+[02:36] Basicamente que queremos executar, mas não estamos nos preocupando tanto com a questão de criar uma classe para isolar esse comportamento e poderia reutilizar estou focando mais na lógica mesmo um API deva funcionar.
+
+[02:48] Vamos ignorar na prática que estamos colocando de repetir o código, só para agilizar no que realmente importa para esse curso. Eu tenho esse filme e se ele foro nulo, no caso se quiser comparar com o nulo, o que estou falando?
+
+[03:09] O filme que eu quero atualizar não existe. “Como assim, Daniel?” Vamos lá, eu quero retornar um *not found. Temos na nossa atualmente três filmes cadastrados certo, eu não estou com aplicação em execução.
+
+[03:23] Vou recortar ele rapidinho, vamos executar uma aplicação só para entender, para ela ficar executável, vamos lá eu quero recuperar os meus filmes e pronto tem o Id 1, Id 2, Id 3, se eu passar uma Id inexistentes como por exemplo 10 o filme que quero atualizar não existe.
+
+[03:45] Então vai retornar not found, se não altera o filme. Voltamos para a nossa aplicação e eu quero atualizar esse filme pelo seu ID, mas se como é que eu o atualizo?
+
+[04:02] O que que eu preciso receber para atualizar? Eu preciso receber informações novas, que quero para atualizar esse filme, então a partir do corpo da requisição eu quero receber um filme.
+
+[04:14] Vai chamar de filme novo ou filme atualizar - eu vou chamar ele de filme novo e caso tenha esse filme encontrado na base nós vamos falar o filme.Título = filmeNovo.Titulo vamos sobrepor informação do filme novo e vamos fazer a mesma coisa para todos os outros campos.
+
+[04:40] Filme novo filme.Título = filmeNovo.Título, fazer a mesma coisa para gênero, vai fazer a mesma coisa também para os outros atributos, que são a duração e o diretor.
+
+[05:02] Estamos atualizando campo a campo, bem trabalhoso isso, vamos entender os problemas daqui a pouco e como pode resolver, caso não exista retorna not found.
+
+[05:12] E se estiver atualizado tudo certinho, nós queremos por fim falar que o nosso contexto deve salvar essas mudanças, então o nosso filme que foi recuperado foi alterado.
+
+[05:26] As informações atuais dele queremos colocar como nova, salva as mudanças e o que que deve retornar? Temos atualmente nos nossos status de retorno, se voltar no nosso post de 200 ok, tem que também de 201 created. E a boa prática que deve utilizar quando está retornando de um *put.
+
+[05:48] Uma atualização de algum recurso é que simplesmente não tem nenhum conteúdo, não retorna o recurso, mas também não retorna informação nenhuma, se torna simplesmente no content.
+
+[05:59] Eu vou salvar e a princípio o nosso código está feito, se vir em executar a aplicação mais uma vez, tem nosso Star Wars cadastrado errado e eu quero atualizá-lo.
+
+[06:14] Como é que pode fazer isso? Vem no mais de novo, eu vou copiar a nossa URL clássica de acesso, eu quero enviar um put para localhost:5001/filme/3 porque é o ID do filme que eu quero alterar.
+
+[06:34] No corpo da requisição, vamos adiantar também, eu vou copiar. Eu quero alterar o valor dele de, por exemplo Star Wars, para Star Wars - O Retorno do Jedi, eu quero alterar o título e o gênero eu quero colocar ficção.
+
+[06:58] Se eu enviar, observa o que vai acontecer, tem o retorno de no contente, realmente não tem nenhuma informação e se for listar nossos filmes de novo, tem Ids 1, 2 e 3, mas a alteração Star Wars O Retorno do Jedi e o George Lucas como diretor, gênero ficção, todas as mudanças colocadas foram aplicadas.
+
+[07:24] Se quiser fazer uma deleção, como é que pode fazer? Pode criar mais uma ação, um novo comportamento para o nosso controlador, public IActionResult DeletaFilme, como identifica o filme que quer deletar?
+
+[07:43] Pela Id, não precisa receber mais nenhuma informação, porque vai buscar o filme por Id, encontrando deleta; queremos utilizar a notação de http que é bem óbvia, queremos deletar algum recurso com httpDelete.
+
+[08:01] Passa para ele qual é nosso ID, assim como fez com o nosso get por Id, também o nosso httpPut, mais uma vez nós queremos recuperar esse filme e se esse filme for nulo, nós vamos simplesmente dar um not found.
+
+[08:25] Mas se esse filme - deixa eu parar a execução para parar de reclamar, se não for nulo eu quero que meu contexto remova esse filme que eu acabei de recuperar, simples e prático.
+
+[08:39] Salvo as alterações, _context.SaveChanges, retorno o no contente, porque quando está deletando a boa prática desse caso não retornar a informação alguma.
+
+[08:53] Se executar mais uma vez, não queremos executar put, nem get, queremos executar delete, vamos deletar o nosso filme de Id 3. Vamos colocar, vamos enviar requisição, temos um no contente.
+
+[09:13] Se listarmos todos nossos filmes novamente, só temos um e o dois. Se eu tentar dar um get por Id no 3, eu tenho um not found.
+
+[09:24] Então, ele conseguiu atualizar e remover um filme do nosso sistema, mas o nosso código está meio feio em alguns pontos, como por exemplo nós estamos fazendo essa atribuição manualmente, o nosso próprio filme está com todas as propriedades expostas, como é que deve lidar com isso?
+
+[09:44] Está sempre recebendo como um parâmetro o nosso modelo do banco de dados, está bem estranho. Na próxima aula você vai entender como resolver esses problemas, o que eles causam e como é que pode contorná-los. Por esse vídeo é só. Até mais.
+
+
+
+
+
+
+11 - Faça como eu fiz: Atualização e remoção
+Nesta atividade, implementaremos o comportamento de atualização e remoção em nossa API. Inicialmente, abra a sua classe FilmeController. Começaremos escrevendo o esqueleto de nosso método de atualização.
+
+[HttpPut("{id}")]
+public IActionResult AtualizaFilme(int id, [FromBody] Filme filmeNovo)
+{
+
+}COPIAR CÓDIGO
+Precisamos descobrir se o filme existe em nosso sistema para que possamos atualizá-lo. Caso não exista, informaremos para o usuário:
+
+[HttpPut("{id}")]
+public IActionResult AtualizaFilme(int id, [FromBody] Filme filmeNovo)
+{
+            Filme filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
+            if(filme == null)
+            {
+                return NotFound();
+            }
+}COPIAR CÓDIGO
+Caso exista, precisamos substituir os campos de nosso filme atual pelas novas informações. Em seguida, salvaremos as alterações e retornaremos NoContent para o usuário.
+
+[HttpPut("{id}")]
+public IActionResult AtualizaFilme(int id, [FromBody] Filme filmeNovo)
+{
+            Filme filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
+            if(filme == null)
+            {
+                return NotFound();
+            }
+filme.Titulo = filmeNovo.Titulo;
+            filme.Genero = filmeNovo.Genero;
+            filme.Duracao = filmeNovo.Duracao;
+            filme.Diretor = filmeNovo.Diretor;
+            _context.SaveChanges();
+            return NoContent();
+}COPIAR CÓDIGO
+Para a remoção, o trabalho será parecido.
+
+[HttpDelete("{id}")]
+public IActionResult DeletaFilme(int id)
+{
+            Filme filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
+            if (filme == null)
+            {
+                return NotFound();
+            }
+}COPIAR CÓDIGO
+Utilizaremos o DbContext para efetuar a remoção. Em seguida, retornaremos para o usuário.
+
+[HttpDelete("{id}")]
+public IActionResult DeletaFilme(int id)
+{
+            Filme filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
+            if (filme == null)
+            {
+                return NotFound();
+            }
+_context.Remove(filme);
+            _context.SaveChanges();
+            return NoContent();
+
+}COPIAR CÓDIGO
+
+
+
+12 - Retorno da atualização de dados
+Seguindo as boas práticas, qual é o retorno apropriado para quando uma requisição de atualização é efetuada com sucesso?
+
+Alternativa correta
+204 (NO CONTENT)
+
+
+
+
+13 - O que aprendemos?
+Nessa aula aprendemos:
+
+Como abrir uma conexão entre a API e o banco de dados.
+Como gerar migrations e mapear nosso objeto no banco de dados.
+Como utilizar o DbContext para fazer operações no banco.
+Como atualizar um recurso no sistema com o verbo PUT.
+Como deletar um recurso no sistema com o verbo DELETE.

@@ -1,0 +1,316 @@
+Modulo 02 - Construindo a API
+
+01 - Criando a primeira rota
+[00:00] Nesse vídeo vamos colocar em prática parte do que vimos no vídeo passado para sedimentar o nosso conhecimento, então eu já estou com Visual Studio aberto e vamos criar o nosso projeto.
+
+[00:10] Vamos criar um projeto, quando abre o Visual Studio já abre naquela tela e vai pesquisar modelo para adiantar nossa vida, que vai querer criar uma API, repare que aparecem duas opções, mas é que quer é utilizando CSharp.
+
+[00:29] Escolhe, próximo, vou chamar de filmes.API o nosso projeto e vamos dar mais um próximo, vamos usar .NET 5, não vamos nos preocupar com nenhuma dessas questões de baixo e criar.
+
+[00:44] O Visual Studio vai começar a criar o nosso projeto, enquanto ele está criando eu minimizo, eu falei para o pessoal do Linux que eu também vou dar uma ideia de como vocês podem seguir e o que vai fazer agora é isso também.
+
+[00:58] Eu estou dentro de uma partida criado chamadas FilmesAPI que não é a mesma que eu acabei de criar para o meu projeto; eu estou em outro subdiretório e eu posso executar um dotnet new - ou seja direto via linha de comando, o comando dotnet new webapi e eu quero criar uma nova web API.
+
+[01:17] Sem passar mais nada só dou enter, já dentro desse diretório vai pegar o nome e vai criar um projeto com esse nome, se eu abrir o Visual Studio Code nesse diretório, ele está carregando, na verdade ele já abriu.
+
+[01:35] Eu tenho a estrutura de pastas certinhas, se for comparar com o nosso Visual Studio é a mesma coisa próprias properties, controllers, controle tudo da exata mesma maneira.
+
+[01:49] Eu voltar para Visual Studio, vamos seguir agora o seguinte: quando cria esse projeto ele já vem com um template, uma primeira implementação de alguns conceitos de WebAPI, o que é muito útil para exemplificar.
+
+[02:05] O que viu no vídeo anterior, então antes da iniciar efetivamente o projeto vamos ter essa ideia de como funciona uma API na prática para ver funcionando mesmo, antes de seguir com o projeto, vamos seguir com esse projeto de exemplo do .NET.
+
+[02:22] Se observar há uma parte de controladores. Dentro dela vai ter alguns arquivos, nesse caso um só que o WeatherForecastController, se clicar nele que vai ver alguns elementos estranhos, à primeira vista, anotações sendo utilizadas.
+
+[02:40] Tem uma classe chamada weatherforecastController que estende do e ControllerBase e o que que essa classe faz, pessoal? Vamos voltar na nossa apresentação.
+
+[02:57] Queremos que o nosso cliente, nossa máquina se comunique com API, o primeiro passo para se comunicar com API é executá-la, então eu vou clicar na setinha para baixo [2215-Aula2.1_CriandoaPrimeiraRota_Imagem1]
+
+[03:09] Vou escolher filmesAPI não quero escutar o IS, vou clicar no filmesAPI, vou executar, no momento no caso do Windows ele abriu um prompt de comando e ele fala que nossa aplicação está sendo executada na porta 5001 no https.
+
+[03:25] E na porta 5000 http, ele mesmo já abriu o navegador na porta 5001 para vermos a nossa aplicação em execução; ele já faz um autolaunch, já consegue ver rodando automaticamente. Nós mesmos queremos fazer envio de uma requisição para essa API.
+
+[03:51] Sabemos que ela está sendo executada na porta 5000 e 5001. Tecnicamente se fizer um localhost:5001 vai conseguir acessar. Vamos fazer o teste, eu vou tirar esse ‘swagger/index.html’.
+
+[04:07] E vou dar enter, não encontrou, retornou um erro 404 e ele fala que não foi possível encontrar a página. Por que, afinal? Vamos voltar no controlador para entender o que está acontecendo.
+
+[04:21] Se for ler com mais clareza, está falando que esse controlador ele é o quê? Vamos ver o que é a notação em cima, ela fala que todos os derivados do tipo API controle são feitos para dar uma resposta http com um API para servir como API.
+
+[04:43] Então weatherforecastController toda a classe, já está fazendo esse papel, ela é capaz de receber e enviar requisições só por estar utilizando ApiController.
+
+[04:55] Mais, também estendemos ControllerBase que nos dá comportamentos base controlador para que consigamos implementar esses comportamentos.
+
+[05:06] Vamos fazer essa criação também na mão depois, mas só entendendo antes com a apresentação anterior [e justificada; estamos falando que para acessar esse controlador weatherforecastController vai acessar a rota que utiliza esse colchete [2215-Aula2.1_CriandoaPrimeiraRota_Imagem2]
+
+[05:25] Isso quer dizer que está acessando esse controlador a partir do seu nome, como se eu estivesse utilizando - a grosso modo, de eu copiar e colar, é como se eu estivesse fazendo weatherforecast.
+
+[05:37] Sintaxe mais simples, não precisa se preocupar, você está fazendo referência automaticamente já o nome do controlador, que caso em algum momento troque o nome dele eu não preciso me preocupar em trocar no colchete.
+
+[05:51] Para acessar o controlador tem de usar o nome weatherforecastController porque como só tem um controlador faz sentido que ele seja o único responsável por receber e enviar as nossas requisições.
+
+[06:03] Tem que voltar no nosso navegador então e acessar em ‘/weatherforecast’ o que veremos é uma resposta, estamos vendo simplesmente, temos a declaração do nosso construtor - que tem esse campo privado, tem método em baixo chamado get que tem anotação ‘HttpGet’.
+
+[06:32] Que vai entender como eu falei para vocês de maneira mais específica no decorrer do Curso, quando chama o nome do controlador ele executa o método get.
+
+[06:43] Você vai entender todos os detalhes de implementação em breve, mas saiba que quando chama ‘/weatherforecast’, ele está sendo executado, então se votar na nossa apresentação quando acessa ‘/weatherforecast’ consegue ter uma resposta da nossa API.
+
+[07:00] Isso faz sentido naquele conceito de que se voltar para o slide anterior, nós controlamos o que pode ou deve ser acessado, se eu quero que esse ‘/weatherforecast’ esteja acessível, eu crio um controlador para ele e estou expondo alguma informação para quem quiser consumir.
+
+[07:20] No caso que somos nós mesmos; se eu tentar acessar algum outro campo como por exemplo de ‘/weatherforecast123’, não vai exibir nada porque ele não tem uma rota, não tem uma exposição para esse caminho, então consegue de uma vez só voltando na nossa apresentação ver que consegue controlar o que pode e deve ser acessado.
+
+[07:40] E na óptica de quem está consumindo - que fomos nós mesmos acessando esses end point, esse caminho de ‘/weatherforecast’ não importa para como está sendo implementado, o que importa que quando envia uma requisição para /weatherforecast obtém algumas informações que já vieram pré-prontas. [07:59] No caso vai seguindo algumas regras estabelecidas do padrão REST que eu vou abordá-las também com mais clareza no decorrer do Curso e quem está disponibilizando as nossas informações para outras aplicações.
+
+[08:12] Se tivesse algum sisteminha que nós quiséssemos consumir essa API, saberíamos que enviando para ‘/weatherforecast’ consegue obter algumas informações.
+
+[08:23] Basicamente por esse vídeo é só, tivemos esse primeiro contato, essa justificativa de como API funciona, como é que ela está recebendo a requisição, o que precisa fazer, no próximo vídeo vai colocar um pouco mais em prática já começando o nosso projeto.
+
+[08:40] Vamos ver como enviar informações para API, como receber informações. Como alterar, como remover, todos os tipos de operações essenciais que devemos saber fazer.
+
+[08:49] No entanto, antes de finalizar eu quero mostrar também para o pessoal do Linux que - caso você esteja fazendo - pode abrir mais uma vez o Visual Studio Code e só vou parar de executar no Windows, vou dar um stop.
+
+[09:04] No caso do Linux eu posso dar um dotnet watch run, nesse momento ele vai começar a executar, vai compilar e também vai começar a executar nosso projeto; ele já abriu no navegador e o mesmo projeto está em execução.
+
+[09:23] Caso você esteja utilizando Linux, você vai ter de fazer esse processo um pouco mais manual. Por esse vídeo é só, a ideia era sedimentar mesmo e no próximo vídeo começa com nosso projeto a prática efetivamente. Vejo vocês no próximo vídeo e até lá.
+
+
+
+
+
+
+02 - O papel do controlador
+
+Dentre as afirmações abaixo, qual delas melhor retrata o papel do controlador dentro do escopo de uma API?
+
+Alternativa correta
+
+Alternativa correta
+Controladores servem para lidar com as requisições recebidas e devolver uma resposta.
+Alternativa correta! Controladores são a porta de entrada da nossa API.
+
+
+
+
+03 - Recebendo os dados de um filme
+
+[00:00] Nesse vídeo vamos praticar efetivamente no nosso projeto, vamos começar a desenvolvê-lo, já temos ele criado, mas com o nosso próprio código, de início vai apagar o weatherforecastController e weatherforecast não os queremos.
+
+[00:16] Eles eram só para fins de demonstração. O nosso projeto consiste em nós enviarmos uma requisição para nossa API nesse caminho/filme que consiga ler as informações de um filme, atualizar e remover.
+
+[00:29] Entretanto, antes da fazer essas três operações, nós precisamos ter filmes no nosso sistema, nós precisamos cadastrar, criar filmes no nosso sistema, nós devemos conseguir fazer isso e é isso que você vai fazer agora.
+
+[00:42] Vamos voltar para nosso Visual Studio, nós precisamos ter alguma maneira de quando enviar uma requisição para /filme conseguir lidar e criar o filme no nosso sistema. Se nós quisermos receber requisições e tratá-las nós precisamos de um controlador, na pasta Controllers que já havíamos criado vamos adicionar.
+
+[01:04] Não diretamente um controlador e sim uma classe para aprender a fazer sem nenhuma ajuda, fazer o que deu certo, então FilmeController - que vai ser o nome dele, precisamos essa classe efetivamente como um controlador, nós vimos no exemplo anterior.
+
+[01:20] A notação APIController e se eu quero quando eu chamar o caminho ‘/filme’ eu preciso explicitar qual é a rota dele, então, a rota dele quando eu chamar o meu nome do controlador, pode passar desta maneira [Route*(“[controller]”)]quando chamar o /Filme.
+
+[01:44] O controlador vai ser chamado sem nenhum problema, eu vou dar um “Alt + Enter”, porque precisa fazer o import dos pacotes necessários, Microsoft.AspNetCore.Mvc e também estender da classe ControlerBase.
+
+[02:07] Precisamos mais uma vez quando enviar uma requisição para /filme eu quero cadastrar um filme no meu sistema, eu preciso ter alguma maneira de executar essa ação, eu preciso de alguma função responsável por isso.
+
+[02:20] Então, a princípio não quero retornar nada void, public void nada adiciona filme, dentro dela nós vamos ter a lógica responsável por adicionar um filme, mas se eu estou recebendo, o meu usuário, de quem está utilizando a minha API, eu preciso receber esse filme, o filme por parâmetro.
+
+[02:41] Porque senão não vou saber o que eu devo adicionar a minha aplicação, e dentro vai ter alguma lógica, que não sabe como guardar esse filme, não está se preocupando em questão de banco de dados, vamos por exemplo, guardar de maneira bem simples através de uma lista.
+
+[02:55] filmes.Add que ele recebeu, mas tem dois problemas de início: primeiro não temos essa lista declarada e segundo não temos essa classe criada. Se formos começar pelo mais fácil vou criar a nossa lista.
+
+[03:14] Que vai ser um campo da nossa classe private static List<Filme> filmes = List vou chamar de filmes como colocou embaixo; vai ser igual New list de filme, perfeito e nós precisamos criar essa classe filme - que vai ser responsável por modelar um filme do mundo real dentro do mundo CSharp.
+
+[03:37] Já tem uma parte com os controladores, vamos com o botão direito em filmesAPI e vamos adicionar uma nova pasta, eu vou chamá-la de models que vai ser parte dos nossos modelos e dentro adicionar nova classe chamada filme.
+
+[03:56] E quais são as informações que vai ter dentro dessa classe? Quais são as informações que o filme tem no mundo real? Várias, mas as que vamos utilizar no Curso são o título do filme - que é bem importante, nós vamos ter o nome do diretor public string Diretor.
+
+[04:24] O gênero do filme também é importante, vamos colocar com um atalho do Visual Studio, prop e dar um “Tab” duas vezes coloca no public string gênero do filme; por fim pode colocar também a duração do filme prop mais um “Tab” duração em minutos.
+
+[04:51] Para não se preocupar com isso, não é o foco a questão numérica, temos a nossa classe criada, precisa importar dentro do nosso controlador, mais uma vez “Alt + Enter” e usa em filmesAPI.models.
+
+[05:04] O namespace que vimos, perfeito. Precisa de alguma maneira bem simples garantir que este filme que está recebendo tenha o título que está passando, as informações, então só para validar visualmente de início pode colocar também não console Console.WriteLine.
+
+[05:27] E exibe o nome do filme que está recebendo, só que ainda tem um último detalhe bem importante, quando eu enviar a requisição para /filme precisa saber de alguma maneira, está criando um filme, está querendo recuperar informação dele?
+
+[05:44] Está querendo atualizar, remover? O que quer fazer? Precisa ter alguma maneira de identificar qual ação quer realizar dentro do nosso controlador. Não só a partir do nome dele; nesse momento que volta ao padrão arquitetural Rest - é a maneira que ele vai organizar a nossa API.
+
+[06:03] Quando nós quisermos criar um recurso no nosso sistema - que é o que você está fazendo agora - nós vamos utilizamos verbo específico http que é usado para indicar quando você vai criar o padrão, quando está criando um recurso novo no sistema.
+
+[06:17] E para fazer isso vem e coloca anotação http, ele sugere as possíveis, quando está criando um recurso no nosso sistema, recurso novo, criamos utilizando http post, o verbo post é o responsável.
+
+[06:36] É o reconhecido como padrão nessa ação de criar um recurso novo, quando eu escutar um verbo do tipo post para /filme, eu vou chamar este método adiciona filme, perfeito.
+
+[06:49] E se vier no postman, eu abro e vou mostrar para vocês, precisa de alguma maneira - que vai ser a ferramenta que utilizaremos, para fazer o controle das nossas requisições para nossa API.
+
+[07:03] Vem no mais (localizado na segunda coluna parte superior da tela) nós queremos enviar para http://localhost:5000 que é onde nossa aplicação está sendo executada para /filme.
+
+[07:15] Queremos enviar essa informação de um filme, que nós sabemos que é um título, um diretor, um gênero e uma duração, de que maneira pode fazer isso? Pode simplesmente enviar através do corpo da nossa requisição, pode usar o texto, pode utilizar xml, pode fazer de diversas maneiras.
+
+[07:35] O mais comum e mais prático da fazer dentro do padrão arquitetural Rest é trafegar JSON - vai enviar as informações através do formato JSON, desse padrão bem simples e para não perder tempo eu já vou colar.
+
+[07:52] O título que está enviando é o Senhor dos Anéis, o gênero é aventura, o diretor Peter Jackson e a duração 180 minutos só o número e esse é um padrãozinho bonitinho do nosso JSON.
+
+[08:07] Bem estruturado, se eu enviar tudo vai dar errado certamente, porque que na nossa aplicação mais uma vez eu preciso indicar que esse filme que eu estou recebendo via parâmetro ele vem atrás do corpo da minha requisição.
+
+[08:24] Não é isso que eu estou fazendo. Como é que eu faço isso? Eu preciso colocar anotação, FromBody eu estou falando este filme que eu estou recebendo vem do corpo da minha requisição.
+
+[08:38] E no post repare que eu não quero também fazer o envio da requisição com o verbo get. Nós queremos fazer o envio com verbo post que é o padrão que deve ser utilizado quando está criando um recurso no nosso sistema.
+
+[08:53] post e se executar isso, eu devo salvar e criar no nosso sistema, preciso executar nossa aplicação, mas antes disso um detalhe importante é que eu particularmente detesto quando executa aplicação e o navegador fica abrindo toda hora.
+
+[09:08] Para evitar isso eu vou na linha 22 até a 24 e vou apagar e em cima da 14 até a 15 também eu vou apagar para evitar que o navegador fique abrindo junto com a nossa aplicação.
+
+[09:23] E vou executar, vamos lá, ele vai abrir o nosso prompt de comando, está em execução e se vir no post e eu enviar a requisição, vamos ver se está tudo certo.
+
+[09:40] O Senhor dos Anéis em execução ele mostrou o título do filme como esperava, exibiu, também tem uma resposta de 200, mas não tem nenhuma outra informação a respeito da nossa requisição.
+
+[09:56] Conseguimos a princípio enviar esse filme do nosso cliente para nossa API e salvando ele também, porém tem algumas questões passamos Senhor dos Anéis, está passando o gênero do filme, está passando o diretor, a duração.
+
+[10:11] E se quisermos adicionar alguns controles em cima do que o usuário pode enviar, só que se o usuário colocar uma duração de 18 quadrilhões de segundos, é válido?
+
+[10:23] Será que se ele passar aventura em branco ou título do filme branco, como é que pode lidar com esse tipo de requisição, como é que valida esses campos de maneira prática, bom isso é o que vamos descobrir no próximo vídeo e eu vejo vocês lá! Até mais.
+
+
+
+04 - Enviando requisições para a API
+PRÓXIMA ATIVIDADE
+
+Quando enviamos requisições para a API a fim de criarmos um novo recurso, é padrão explicitarmos um verbo HTTP para tal ação. Qual?
+
+Selecione uma alternativa
+POST
+
+
+
+
+05 - Validando parâmetros recebidos
+[00:00] Pessoal, a ideia desse esse vídeo é validar o que nosso usuário tem, de maneira prática porque, por exemplo, se ele passar um filme que tem um título vazio, se não estivesse passando O Senhor dos Anéis ou se tivesse passado um valor exorbitante para duração; queremos impor limites.
+
+[00:16] Não queremos que nossos usuários consigam cometer erros propositais; nós queremos definir quais são os limites do que ele pode enviar para não tem problemas, a princípio você vai falar “Daniel, isso é muito fácil, por que você está gravando esse vídeo?”.
+
+[00:32] É fácil, mas não pelo motivo que você está pensando, talvez você pense em adicionar um if, coloca se a string.IsNullorEmpty(filme.Título) for nula ou vazia, no caso se ela não for você adiciona o filme, senão você exige uma mensagem “não pode ter filme em branco”.
+
+[00:55] O título não pode estar em branco, a princípio isso vai funcionar, se vir no nosso filmesAPI e executar o nosso post, vou colocar uma duração razoável de novo, razoável entre 1800 minutos, mas se enviar, deu um erro.
+
+[01:22] E se for olhar no output ainda não tinha subido, vamos executar de novo ele deu um 200 de ok, mas ele exibiu “não pode ter título em branco” ele não entrou, fácil, mas não é bem assim, pessoal, por alguns motivos.
+
+[01:45] O primeiro é que tem que fazer essa verificação manual para cada campo adicionando várias ifs e elses e o nosso método que vai acabar crescendo bastante, não está indicando de maneira clara quem enviou essa requisição no post.
+
+[01:58] Que essa intenção não foi bem-sucedida, falou que a requisição tem um status de 200ok, precisa ter alguma maneira de fazer de forma mais clara tanto para quem vai olhar o nosso código depois e entender o que está acontecendo para que não fique essa confusão de if e else.
+
+[02:16] Mas também para quem vai receber a resposta, “eu não posso fazer isso”, o que eu devo ou não fazer, então vamos voltar para como estava antes. Nossa maneira inicial, vamos aproveitar e tirar o filme título.
+
+[02:30] Também porque ele não é mais necessário e vamos parar nossa aplicação, como é que pode validar esse filme que está recebendo de maneira fácil, prática e rápida? Simplesmente pode chegar no nosso modelo e adicionar campo a campo as restrições.
+
+[02:49] O título, por exemplo, pode falar que ele é um campo de required, campo que é obrigatório da passar, também pode o nome do diretor é um campo obrigatório.
+
+[03:03] Coloca required, o gênero não necessariamente vai ser obrigatório da passar, não precisa se preocupar com isso, mas a duração pode definir também um range além dela não ser obrigatória.
+
+[03:18] Pode definir a ela pode durar no mínimo um minuto e no máximo 600, o filme de 10 horas é um pouco absurdo, mas consegue definir isso e se importar - necessariamente com o nosso “Alt + Enter” usando o models Data Annotations.
+
+[03:38] Está tudo funcionando sem nenhum problema, se executar de novo ele vai executar, vamos esperar terminar de rodar, vai ficar em execução, tudo em execução, surpresa, se passar um filme com título vazio, o que que vai acontecer? Observa que ele retorna um 400.
+
+[04:00] Que significa bad request que ele fala que um ou mais campos não puderam ser validados e ele fala que “título Field is required”, mensagem um pouco feia para o nosso padrão, mas ele validou antes mesmo da nossa requisição bater lá e fazer alguma lógica já validou para nós.
+
+[04:19] Se eu respeitar, colocar o Senhor dos Anéis de novo, vamos lá mais uma vez, deixa eu enviar, ele está falando que a duração tem que ter entre 1 e 600, se eu colocar com valor válido, 500, resultado 200ok.
+
+[04:41] Fácil e prático, o que consegue fazer? Consegue definir qual vai ser a nossa mensagem de erro, definir uma error message podemos colocar “o campo título é obrigatório” para padronizar em português e não se preocupar com isso.
+
+[05:06] A mesma coisa pode fazer para nosso diretor, o campo diretor é obrigatório, no final também pode colocar uma error message para a nossa duração, coloca que “a duração deve ter no mínimo 1 e no máximo 600 minutos”, só para exemplificar, pode ser a duração que vocês quiserem.
+
+[05:45] Se executar a nossa aplicação mais uma vez, estou executando-a de novo, vamos e chegamos no nosso post e se for enviado algo fora do padrão, como título em branco, ele fala o mesmo erro de antes, mas tem a nossa mensagem definida.
+
+[06:13] O campo título é obrigatório, podemos ter diversas outras também, anotações que vão dar, poderíamos definir algo para finalizar, mais um exemplo, no gênero poderia colocar stringLength.
+
+[06:30] E definir algo, como exemplo, o tamanho máximo do gênero é de 30 caracteres e se extrapolar isso coloca, o “gênero não pode passar de 30 caracteres”, fecha e executa, sem nenhum problema.
+
+[06:53] Vamos validar, se colocar o gênero aventura, voltar para Senhor dos Anéis, a princípio tudo deve funcionar, 200ok, se colocar aventura várias vezes, tem mais de 30 caracteres e tudo vai funcionar.
+
+[07:30] Nesse vídeo conseguimos adicionar quais são as restrições que pode enviar para poder cadastrá-lo, de maneira prática, fácil e rápida, mas ainda precisa com a operação de criar um filme, precisa validar efetivamente.
+
+[07:38] Será que estamos adicionando, como que recupera os dados do filme adicionado? Isso descobriremos na próxima aula, vejo vocês lá, até mais.
+
+
+
+
+
+
+
+06 - Faça como eu fiz: Adicionando restrições
+
+Nesta atividade, a proposta será você utilizar as anotações para adicionar restrições à requisição enviada pelo usuário. Inicialmente, abra a sua classe Filme:
+
+public class Filme
+{
+        public string Titulo { get; set; }
+public string Diretor { get; set; }
+        public string Genero { get; set; }
+public string Duracao { get; set; }
+}
+
+
+
+Agora, adicione a restrição de que o parâmetro Titulo deve ser obrigatório. O resultado deve ser algo como:
+
+public class Filme
+{
+    [Required]
+    public string Titulo { get; set; }
+    public string Diretor { get; set; }
+    public string Genero { get; set; }
+    public int Duracao { get; set; }
+}
+
+
+
+
+Para sermos mais expressivos com quem for consumir a API, podemos deixar mensagens mais claras de erro através do parâmetro ErrorMessage.
+
+public class Filme
+{
+    [Required(ErrorMessage = "O campo título é obrigatório")]
+    public string Titulo { get; set; }
+    public string Diretor { get; set; }
+    public string Genero { get; set; }
+    public int Duracao { get; set; }
+}
+
+Como desafio, tente sozinha/o utilizar as anotações StringLength e Range para definir o limite do tamanho do texto e valor numérico dos parâmetros. Caso tenha dúvidas, consulte o vídeo ou a opinião do instrutor abaixo.
+
+
+
+
+
+
+
+
+
+07 - Praticando o uso de annotations
+
+O seguinte código foi escrito:
+
+public class Filme
+    {
+        [Required]
+        public string Titulo { get; set; }
+        [Required]
+        [Range(1, 120)]
+        public int Duracao { get; set; }
+        [StringLength(30)]
+        public string Diretor { get; set; }
+        public string Genero { get; set; }
+    }COPIAR CÓDIGO
+Qual das alternativas abaixo apresenta uma entrada válida para as anotações utilizadas acima?
+
+Selecione uma alternativa
+
+Titulo = "Alura Filmes - O retorno"
+Duracao = 90
+Diretor = "Luis"
+
+
+08 - O que aprendemos?
+Nessa aula aprendemos:
+
+Como enviar requisições para a API.
+Como preparar a API para receber requisições.
+A finalidade do verbo POST.
+Como criar um recurso no sistema.
+Como adicionar validações nos parâmetros enviados.
+
+

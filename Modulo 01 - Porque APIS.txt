@@ -1,0 +1,193 @@
+01 - Apresentação
+Conceitos Gerais
+[00:00] Pessoal, tudo bem? Eu sou o Daniel e vou ser instrutor de vocês nesse curso de API Rest com .NET Core na Alura. O que veremos nesse curso? Bom como está no título da apresentação vamos entender os conceitos de como criar e consumir de um API.
+
+[00:12] No caso utilizaremos o .NET Core e o que veremos neste Curso? Dando uma apresentação rápida do projeto para vocês, vamos entender como se recebe e lida com as requisições através de controladores, como lida com a camada de dados.
+
+[00:28] Também como conecta um banco de dados, como utiliza os recursos desses frameworks para fazer comunicação entre a nossa Api e o banco; e gerar todos os nossos modelos. Como faz mapeamento automático entre objetos do nosso sistema e posteriormente veremos outros assuntos.
+
+[00:45] Na próxima parte, vamos abordar a parte de segurança, de criação de usuários; nessa primeira parte desse primeiro Curso vamos abordar primariamente as questões dos conceitos de um Api - o que deve retornar, quando deve retornar e como faz conexão com banco.
+
+[01:02] Caso você sinta falta de algum desses conteúdos que abordei e que serão abordados numa próxima parte tenha paciência que vamos chegar lá depois, certo? Vamos começar no próximo vídeo, eu vou preparar nosso ambiente eu vejo vocês lá. Até mais.
+
+
+
+02 - Preparando o ambiente
+Download dos pacote .Net, Visual Studio, MySql e SqlSevre, Postman
+[00:00] Pessoal, nesse vídeo que eu vou mostrar para vocês quais são as etapas que vocês precisam seguir para bom andamento do curso de uma maneira bem simples, fácil e sem problemas.
+
+[00:10] Inicialmente você precisa fazer o download do .NET na versão 5. Então você vai entrar no site que eu vou deixar na descrição do vídeo que ela vai fazer o download da versão 5.0.202, eu no caso estou utilizando o Windows, recomendo que você utilize o Windows para evitar qualquer problema.
+
+[00:29] E seguir o Curso à risca, todos os detalhes que eu vou apresentar, mas caso você queira utilizar o Linux você pode, ele tem a documentação para você instalar o .NET na versão da sua distribuição do Linux.
+
+[00:42] Você vai escolher versão, vai fazer o download ou expressar também no caso do Windows do Visual Studio e o Visual Studio eu também vou deixar o link para vocês, vamos fazer download da versão comunidade Visual Studio 2019 é só clicar em download gratuito.
+
+[01:00] E baixar. Vamos precisar do MySQL na versão 5.7 - eu prefiro baixar instalador direto completo, aperta download e ele sugere que você crie uma conta na Oracle, mas você não precisa é só apertar em “No thanks, just start my download” e ele irá começar a baixar.
+
+[01:20] Também vamos precisar do Postman app que vai ser responsável por enviar e receber requisições da nossa aplicação. Então vai escolher – ver a questão 32 ou 64 bits, ou mesmo se você está utilizando um Linux ou MacOS, mas recomendo que você siga mais uma vez o curso com o Windows para ter tudo padronizado.
+
+[01:45] Mesmo assim: “ah Daniel quero seguir o curso com Linux”. Então você pode utilizar que o Visual Studio Code como o seu editor de código e também tem o link para fazer o download do MySQL e ter todo guia na sua distribuição Linux.
+
+[02:04] Depois que fizer download de todos esses programas citados, o Postman e o .NET 5 são bem simples de instalar, instalador um next finish não tem nenhum problema nisso, mas o visual Studio e o MySQL eles têm peculiaridades; no caso estou abrindo o instalador do MySQL, deixa eu mostrar para vocês.
+
+[02:24] Ele vai pedir para continuar, aperta e vai fazer o download, instalação de tudo que é necessário para Visual Studio e como eu já o tenho instalado na minha máquina, está aparecendo opção de modificar, para vocês seria instalar.
+
+[02:42] Então só mudaria que está escrito, mas apertando ele vai abrir uma janela, isso não vai mudar e ele vai perguntar o que você quer instalar nesse seu pacote.
+
+[02:52] Vamos criar apenas .NET Desenvolvimento Web e essas opções do lado direito, a parte opcional não precisa se preocupar pode deixar do jeito que está, mas do lado esquerdo não precisa marcar mais nada.
+
+[03:07] Só precisa .NET Desenvolvimento Web e você pode escolher entre instalador de download ou baixar tudo e depois instalar, mas isso vai da sua internet, de como você quer fazer a instalação.
+
+[03:19] Eu vou fechar porque eu já o tenho instalado, vou mostrar para vocês outra questão do MySQL, ele é um pouquinho “malandro”, a instalação também é bem simples, mas para economizar tempo e espaço na nossa máquina eu vou abrir o instalador.
+
+[03:37] Da primeira vez que ele executar, ele vai abrir uma janelinha e vai perguntar no nosso instalador “o que que quer instalar”, ele dá opções de pacote.
+
+[03:52] Então, nós vamos querer para economizar tempo e espaço customizado e vai instalar MySQL server na versão 5.7; escolho a versão do meu sistema e em aplicações instalar Workbench só para visualização depois, para ter tudo certinho.
+
+[04:13] Vou apertar next, ele está falando que esse caminho já existe na minha máquina, talvez não exista na sua não é um problema, se não for o caso sem problema.
+
+[04:25] Caso esteja aparecendo isso também, não vai ser um problema. Executa e enquanto ele começa a instalar eu vou mostrar para vocês, dar um briefing do nosso projeto no Visual Studio.
+
+[04:36] E o que vocês devem ver quando o projeto, quando a instalação terminar, quando a instalação terminar você vão executá-lo pela primeira vez e ele vai abrir uma janela.
+
+[04:45] Então vai ter o executável do Visual Studio e eu vou mostrar para você já um pouco de como é o nosso projeto; como vai ser. O que vamos ver.
+
+[04:55] Então eu abro Visual Studio, movo para nossa janela, teremos questões sobre como consegue modelar um objeto do mundo real - algum conceito, como por exemplo um filme que é o que lidaremos.
+
+[05:12] No mundo .NET, então como consegue fazer isso, como consegue enviar e receber requisições, as informações que quer passar para o usuário baseada na requisição que ele envia, como nossa aplicação vai ser iniciada.
+
+[05:26] Como consegue lidar com o banco de dados, tudo isso vai ser passado para vocês no decorrer do Curso, eu estava mostrando para vocês terem essa ideia básica de como vai seguir o nosso projeto, que que ele é, do que se trata só para dar um gostinho para vocês.
+
+[05:45] Também para vocês saberem como validar e o visual Studio está instalado, se vocês conseguirem abrir ele na máquina de vocês é um ótimo sinal, vou fechar ele agora porque provavelmente nossa instalação do MySQL já terminou.
+
+[05:58] Dá um next e de novo para parte de configuração e agora ele vai pedir qual vai ser sua senha do Banco. Vou colocar minha senha como “root”, por simplicidade e praticidade para você não se preocupar com isso que não é o foco.
+
+[06:14] Assim, next duas vezes e execute; ele vai fazer a instalação, vai iniciar o serviço do banco sem nenhum problema. Enquanto ele vai terminando essa parte, na verdade já terminou, eu vou finalizar, vou deixar marcado para validar o arquivo.
+
+[06:32] Vou abrir, o que você pode fazer caso você realmente queira utilizar por exemplo Visual Studio Code e o Linux como um todo (MySQL está ok posso fechar), vou abrir o VS Code e vou mostrar para vocês algumas possibilidades de extensão que vocês podem para facilitar também o trabalho de vocês.
+
+[06:53] Algumas extensões bem interessantes são a própria extensão C# da Microsoft e também acessar C# Snippets que dá algumas ajudas, algumas dicas, facilidades praticidades da linguagem dentro da plataforma, dentro do Visual Studio Code.
+
+[07:13] Por esse vídeo é só. Vimos toda essa parte de instalação, preparar um ambiente, viu um pouquinho do projeto e não próximo vídeo vamos entender por que que deve estudar um Api e criar um. Qual a vantagem disso? Por que deveria fazer isso? Eu vejo vocês no próximo vídeo e até mais.
+
+
+
+03 - Faça como eu fiz: Configurações iniciais
+Nesta atividade, você irá preparar o seu ambiente de desenvolvimento para dar continuidade ao curso. Inicialmente, abra o Visual Studio. Em seguida, escolha a opção “Criar um projeto”.
+Tela inicial do Visual Studio
+Após isso, utilize a barra de pesquisa e escreva “api”. Escolhendo a opção com a linguagem C#.
+
+Tela de seleção do tipo de projeto do Visual Studio
+Dê um nome para seu projeto. Para o curso, utilizamos o nome FilmesAPI. Aperte “Próximo”.
+Tela de definição de nome e caminho do projeto do Visual Studio
+Certifique-se de utilizar a versão .NET 5.0 e aperte em “Criar”.
+Tela final antes de criar o projeto no Visual Studio
+
+Nesta atividade, você irá preparar o seu ambiente de desenvolvimento para dar continuidade ao curso. Inicialmente, abra o Visual Studio. Em seguida, escolha a opção “Criar um projeto”.
+
+Tela inicial do Visual Studio
+
+Após isso, utilize a barra de pesquisa e escreva “api”. Escolhendo a opção com a linguagem C#.
+
+Tela de seleção do tipo de projeto do Visual Studio
+
+Dê um nome para seu projeto. Para o curso, utilizamos o nome FilmesAPI. Aperte “Próximo”.
+
+Tela de definição de nome e caminho do projeto do Visual Studio
+
+Certifique-se de utilizar a versão .NET 5.0 e aperte em “Criar”.
+
+Tela final antes de criar o projeto no Visual Studio
+
+ DISCUTIR NO FORUM
+VER OPI
+
+
+
+04 - O que é uma API
+Visa disponibilizar informações para outras aplicações
+Para consumir seus recursos é necessarios que siga as regras estabelecidas
+Abstarai detalhes da implementação
+Controla o que pode e o que não pode ser acessado
+
+[00:00] Então, pessoal, vamos entender nesse vídeo porque deve utilizar Api tanto como o cliente - vamos consumir dessa Api e usá-la. Tanto um sentido de por que que deve desenvolver uma API para expor as nossas aplicações?
+
+[00:16] Você vai entender dos dois lados a história, mas também eu recomendo a vocês que façam os Cursos anteriores de C# da plataforma, se vocês não ainda não tiverem conhecimento da parte de orientação a objetos, caso você já tenha e garanta que o seu conteúdo esteja pronto para esse curso.
+
+[00:35] Sem problemas também, porque já vai ajudar bastante, porque vai entender qual é o significado de Api o que isso quer dizer? Quer dizer application programming interface; e o que que é uma interface? No fim das contas uma interface nada mais é que um conjunto de regras que deve seguir para implementar um comportamento na nossa aplicação.
+
+[00:56] E uma Api é isso, só que para entender efetivamente vamos dar um exemplo do dia a dia, tem o nosso computador através do nosso navegador, quer acessar algum serviço de streaming qualquer para recuperar as informações de um filme.
+
+[01:10] Detalhe: eu não quero assistir esse filme, não estou preocupado em como as informações vão ficar bonito na tela, eu quero recuperar informações do filme apenas, quero saber qual é o título, quem é o diretor, qual foi o ano de lançamento e depois não é o nosso trabalho nesse curso se preocupar em como exibir as informações.
+
+[01:30] Só que vamos um pouco além e ver se funciona no dia a dia para chegar no real problema, tem o nosso cliente um, o nosso computador que está ali no computador e quer recuperar informações.
+
+[01:48] Sabemos que no nosso computador, no nosso navegador não tem todas as informações de todos os filmes do mundo, a não ser se você estiver trabalhando no IMDB. Então você tem, mas eu imagino que você não trabalha lá; senão parabéns.
+
+[01:59] De qualquer maneira, precisa consultar essas informações para que consiga exibir no nosso computador, para consultar precisa acessar alguém que consiga essas informações que é o servidor. Então a nossa máquina vai enviar uma requisição para esse servidor, o servidor consulta um banco de dados e devolve essa informação.
+
+[02:25] A informação, a resposta dada, o nosso servidor para nossa máquina e nossa máquina exibe as informações título do filme, diretor as informações, sobre o nosso filme de alguma maneira.
+
+[02:37] Não quero saber qual era, não se preocupa com isso. Na óptica do cliente não tem problema, no ponto de vista de quem está enviando essa requisição, mas e na visão de quem desenvolveu esse sistema para recuperar essas informações?
+
+[02:45] Digamos que você como desenvolvedor de sistema de streaming, quer fazer um aplicativo para celular e esse aplicativo vai precisar consultar esse servidor também, mas vamos pensar será que ele tem uma maneira padronizada já de acessar essas informações, de consumir essas informações?
+
+[03:16] E exibir e recuperar de alguma maneira? Pode ser que sim se você já tinha um sistema bem elaborado, mas pode ser que não também e caso você já tem um sistema bem elaborado para isso muito provavelmente você já está utilizando Api.
+
+[03:34] E talvez nem saiba disso, mas qual é a ideia da utilizar Api agora? Tem uma maneira padronizada simples e prática para que o cliente 2 recupere as informações da mesma maneira que nosso cliente 1.
+
+[03:47] A princípio seria só enviar uma requisição para o servidor e recuperar essas informações, mas não sabemos como esse servidor está seguindo, como está implementando os comportamentos de recuperar informações, de alterar alguma informação de remover alguma informação.
+
+[04:05] Precisa ter isso padronizado e nesse momento que entram as Apis, a princípio só mudou o desenho, mas no fim das contas o que vai acontecer na visão de quem vai consumir, por exemplo, vamos enviar uma requisição.
+
+[04:21] E tem uma resposta na nossa Api e vai conseguir exibir, mas “ok Daniel você está conseguindo exibir agora o resultado, só porque você mudou o formato do desenho”. Não, calma lá eu vou justificar isso para vocês.
+
+[04:35] Porque utilizando uma Api a ideia que vai definir na nossa porta de entrada da aplicação o que está disponibilizando e como está disponibilizando; como quem quer consumir esses dados deve acessar esses dados.
+
+[04:51] Vamos focar no detalhe da Api, da porta de entrada de como nossa aplicação deve receber requisições e responder para nossos clientes.
+
+[05:02] No fim das contas a parte de trás não importa. Porque estamos focados não em detalhes de implementação, mas em como receber requisição e enviar resposta, independente do tipo de cliente.
+
+[05:16] Tem uma maneira padronizada de fazer isso. Nesse momento, desenvolvendo uma Api, por exemplo, pode seguir alguns padrões, para falar que quem quer consumir determinado dado deve acessar determinada rota, determinado caminho.
+
+[05:30] Vamos entender o que isso quer dizer, determinada url, tem algum padrão para isso, algum padrão arquitetural, que você já talvez tenha ouvido falar que é o Rest. Vamos entender cada detalhe de implementação no decorrer do Curso.
+
+[05:49] Mas tendo uma Api que implementa padrão Rest arquitetural vamos conseguir dizer “celular, computador, dispositivo IOTs, smartwatch, para você recuperar as informações você precisa enviar uma requisição para determinada linha, determinado caminho” para responder isso.
+
+[06:10] O nosso cliente, o nosso cliente 2 não vai se preocupar em como essa informação é disponibilizada, porque teremos isso de maneira simples, prática e padronizada e entenderemos no decorrer do curso.
+
+[06:25] Para dar nome, uma API RESTful quando segue esse padrão arquitetural, dizemos que é API RESTful, a partir de agora fica claro caso você tivesse essa dúvida, REST é o padrão e RESTful é quem implementa, quem segue esse padrão.
+
+[06:43] Os nossos clientes que vão acessar essa API serão nossos consumidores, na visão do consumidor teremos – estou desenvolvendo um aplicativo para smartwatch, quero consultar as informações de um filme.
+
+[07:00] Eu vou ter uma maneira de acessar essa informação de maneira prática e padronizada, mas no fim das contas é isso, quando temos API ganhamos e temos que vamos disponibilizar os dados com as informações de maneira padronizada para outras aplicações.
+
+[07:25] Quem vai consumir, independente de quem seja, não importa, vai disponibilizar os dados de maneira padronizada, contanto que sigam nossas regras que estamos impondo de requisição, mais uma vez frisando isso.
+
+[07:41] Para quem for consumir tem de seguir as regras, então só vão poder acessar informações que queremos, porque disponibilizaremos apenas o que quisermos, o que quiser em determinadas circunstâncias.
+
+[07:53] Também controla o que (ou não) pode ou deve (ou não) ser acessado. Um detalhe, abstraímos detalhes de implementação, quando nosso cliente 1 e 2 estão querendo acessar as informações de um filme, não precisam saber se o banco MySQL, se o banco é relacional ou não.
+
+[08:16] O que precisam fazer é enviar uma requisição para a API e ela vai devolver a informação. Teremos essa visão durante o Curso, tanto na lógica do consumidor quanto na lógica de quem está desenvolvendo API.
+
+[08:29] Por este vídeo é só, vamos entrar em detalhes de implementação no decorrer do Curso, todos os pontos que falei serão apresentados de como estamos fazendo isso, por que estamos fazendo e entender cada um dos detalhes no decorrer da prática. Vejo vocês no próximo vídeo. Até lá.
+
+
+05
+Sobre APIs
+PRÓXIMA ATIVIDADE
+
+APIs possuem finalidades específicas e diversas utilizações. Quais das alternativas abaixo mostram essas características?
+
+Abstraem detalhes de implementação para quem for consumir a API.
+Controlam o que pode/deve ser acessado.
+
+
+
+
+06 - O que aprendemos?
+Nessa aula aprendemos:
+As vantagens da utilização de uma API.
+Por quê e quando utilizar/desenvolver uma API.
+Como preparar o ambiente no Windows e Linux.
+

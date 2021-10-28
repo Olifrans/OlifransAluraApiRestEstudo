@@ -1,0 +1,236 @@
+01 - Melhorando o código
+
+02 - Usando Data Transfer Objects
+
+[00:00] Pessoal, vamos olhar nossa classe de filme. O que tem dentro dela? Temos a definição das nossas propriedades, então ID, título, diretor, gênero e duração, mas a pergunta que fica é o seguinte:
+
+[00:16] Quando nós enviamos a requisição para criar um filme se olhar no post, envia título, gênero, diretor e duração. É papel de quem está enviando uma requisição para API, enviar Id?
+
+[00:25] Não. Porque o ID está sendo gerenciado, controlado pelo banco de dados, então não faz sentido se observar no controller, receber e instanciar um filme sendo que Id não é algo que deve ser recebido através da nossa requisição, apenas gerenciado pelo banco.
+
+[00:44] Faz sentido, certo, como é que pode evitar que ID seja recebido através de requisição, que deixe isso de maneira encapsulada só para o banco de dados, como é que exime a responsabilidade dos usuários, poder enviar um ID?
+
+[01:03] Tira as linhas e está resolvido, mentira. Porque não pode fazer isso já que precisa do ID, que essa classe de filme como nós falamos, ela responsável pelo mapeamento entre o nosso modelo CSharp lá para o banco de dados.
+
+[01:20] precisamos ter alguma outra maneira de receber quais são os parâmetros certos na nossa requisição. E para isso nós podemos utilizar um padrão de projeto especial para esse problema que se chama DTO - Data Transfer Object.
+
+[01:37] A ideia é criar classes que vão instanciar objetos responsáveis por transferir dados entre as partes do nosso sistema. Então quais são os dados que nós queremos receber atrás da requisição? Título, diretor, gênero e duração. E como criaremos isso?
+
+[01:55] Cria essa classe que vai representar como um filme deve ser criado no nosso sistema. Dentro da parte de data nós vamos criar uma nova pasta, organização mais uma vez, chamada DTOs e dentro dela vamos criar nova classe chamada CreateFilmeDTO.
+
+[02:20] Porque esse DTO vai ser voltado para quando quiser criar um filme no nosso sistema. As propriedades que essa classe vai ter basicamente as mesmas de um filme, só que sem o identificador. Porque nós não queremos que o usuário envie, tenha esse poder de enviar o identificador.
+
+[02:40] Então, importa, “Alt + Enter” e no nosso controlador ao invés de receber o filme nós vamos receber simplesmente umCreateFilmeDTO, faz import com “Alt + Enter”, mais uma vez.
+
+[03:00] Nesse momento nós vamos receber esse filme DTO, vamos adicioná-lo ao banco. Adiciona ele, mas a ideia que não é na boa prática não adicionar um filme DTO ao banco, vai adicionar um filme.
+
+[03:17] Precisa conversar DTO em um filme, como é que faz isso? Fácil, você coloca Filme filme = new Filme e vamos inicializar todas as propriedades, coloca o título desse filme que está criando, tem o mesmo título do filme DTO.
+
+[03:34] Mesma ideia, por exemplo, o gênero esse filme que vai ser igual ao gênero DTO. Gênero, a duração a mesma coisa, e por fim tem o diretor que vai ter igual ao filme DTO.
+
+[04:00] Agora sim, coloca ponto-e-vírgula no finalzinho. Estamos fazendo a criação de um objeto com construtor implícito, está passando para esse filme, está inicializando-o com valor das propriedades do nosso DTO e adiciona ele ao nosso sistema.
+
+[04:18] A ideia de que se executarmos a nossa aplicação, vamos conseguir adicionar da mesma maneira, se eu adicionar mais uma vez Star Wars, tem o ID, se listar todos os nossos filmes, temos também ele adicionado.
+
+[04:37] Nada mudou, mas está limitando, estamos definido o que deve ser enviado efetivamente na requisição e fazendo esse mapeamento, mas a ideia é que repita esse mesmo comportamento também para quando quer criar.
+
+[04:52] Não só criar, mas também listar um filme, ou quando quer atualizar os recursos atualizar os recursos de um filme, o que deve ou não enviar; isso é bem fácil a ideia é repetir esse mesmo comportamento.
+
+[05:04] Eu vou parar de executar a nossa aplicação mais uma vez e vamos fazer antes de atualizar, que vai ser bem simples, quando está atualizando um filme vamos recuperar o Id a partir dele e vamos pegar as informações do filme que está recebendo.
+
+[05:26] Vamos receber um filme, eu vou fazer que o “cúmulo da preguiça” vou copiar e colar, só que não vai ter um createFilmeDTO, vai ter um update DTO e dentro dessa classe vai ter public class UpdateFilmeDTO.
+
+[05:42] Por mais que tenha as mesmas propriedades, tem finalidade diferente nesse caso e estamos primando pela semântica, então no filme controle, ao invés de receber um filme no atualiza filme, vamos receber um update filme DTO.
+
+[06:01] Vamos chamá-lo de filme DTO, a ideia embaixo que recupera o filme pelo Id, vamos atualizá-lo com os valores do DTO. Tudo deve continuar funcionando, vamos executar.
+
+[06:16] Se tentar atualizar o filme criado que é o 5, e passar os dados Star Wars retorno do Jedi com DTO, vamos botar uma coisa mais bonitinha, fazer atualização e se der um get no 5, temos o nosso Star Wars retorno do Jedi com DTO tudo continua funcionando.
+
+[06:45] A princípio parece bobagem, mas eu consigo mostrar para vocês que dá para ser bem interessante. Quando está recuperando um filme por ID ou está recuperando todos os filmes, vou utilizar o caso de recuperar por ID.
+
+[07:03] O que pode fazer? Quando está retornando esse filme, está retornando simplesmente nosso objeto mais uma vez completo com Id, título, diretor, gênero e duração.
+
+[07:16] Entretanto, se eu quiser não retornar alguma informação específica ou se eu quiser retornar alguma informação extra? Vou parar mais uma vez e dentro da nossa pasta DTOs eu vou mais uma vez copiar e colar o arquivo diretamente.
+
+[07:33] E vou criar o nosso ReadFilmeDTO e dentro coloca ReadFilmeDTO, nele pode retornar o ID nesse caso porque faz sentido, a questão da consulta realmente então copia linhas 11 a 13.
+
+[08:01] E cola no nosso DTO. Porque nós queremos retornar ID junto com outras informações, mas nós também podemos definir, por exemplo, um public DateTime.
+
+[08:15] Que vai ser hora da consulta, no momento da consulta e vai ter também o nosso getset, vamos colocar, dentro do nosso controlador, quando for retornar o nosso filme por Id, nós podemos fazer ReadFilmeDto filmeDto = new ReadFilmeDto se o filme for diferente de nulo.
+
+[09:00] Aquela mesma coisa Titulo = filme.titulo contrário, não está se preocupando em botar DTO no filme e sim filme no DTO, então título vai colocar a mesma coisa também para diretor.
+
+[09:22] Vamos colocar a duração filme. Vamos colocar o Id. Vamos colocar também o gênero e por fim pode colocar também a nossa hora da consulta igual apresenta o date time.now, está colocando uma informação extra.
+
+[09:57] Nesse caso onde vai retornar o nosso filme DTO e vai ter uma informação a mais, se executar nossa aplicação e tentar executar no nosso get do nosso filme, vai ter a hora da consulta: 5 de maio de 2021, 20:23 todas as informações perfeitas.
+
+[10:21] E essa informação não é do tipo que faz sentido de guardar no banco, então consegue adicionar ou remover informações baseadas na utilização dos nossos DTOs e isso é muito importante e elegante também.
+
+[10:32] Temos mais alguns problemas para resolver, essa questão de verbosidade quando faz todo esse mapeamento manual, o nosso filme está com todos os atributos, as propriedades expostas, precisa resolver isso de alguma maneira. Veremos no próximo vídeo, eu vejo vocês lá e até mais!
+
+
+
+
+03 - Por que DTOs?
+
+Utilizando DTOs, conseguimos ter um maior controle em nossas requisições e respostas. Por quê?
+
+Selecione 2 alternativas
+
+Pois podemos retornar parâmetros "calculados" em tempo de execução para o nosso usuário, ou seja, informações que não estão armazenadas.
+
+Pois podemos definir os parâmetros enviados de maneira isolada do nosso modelo do banco de dados.
+
+
+
+
+
+04  - Mapeando objetos com o AutoMapper
+
+[00:00] Pessoal, para fecharmos com chave de ouro, o que precisamos? Precisamos dar uma olhada no nosso código do controlador, tem diversas conversões feitas de maneira manual, por exemplo está convertendo de filme DTO para filme.
+
+[00:18] A seguir está convertendo de filme para read filme DTO e por fim está convertendo de filme DTO para filme, para substituir o filme do nosso sistema, isso está um pouco verboso, para quem vai ler e para quem já escreveu também.
+
+[00:32] Como poderia ter evitado isso e tornar o nosso código também mais legível para quem for olhar posteriormente? Existe um pacote muito famoso utilizado chamado AutoMapper que serve para fazer esses mapeamentos por assim dizer entre diferentes classes.
+
+[00:49] Consegue utilizar de início com o nosso gerenciador de pacotes get e pesquisar em procurar pelo AutoMapper, repare que nós não vamos utilizar na instalação do AutoMapper sozinho.
+
+[01:04] Vamos colocar AutoMapper.Extension.Microsoft.DependencyInjection, tenho ele instalado, está aparecendo para eu poder desinstalar e estava utilizando a versão 8.11; a partir do momento em que instalar nós precisamos iniciá-lo junto com a nossa aplicação.
+
+[01:24] Precisa que ele deve iniciar junto com a nossa aplicação, por isso colocar junto com nosso startup, faz de maneira bem parecida como fizemos com DBContext services.AddAutoMapper como é que coloca?
+
+[01:46] Queremos adicionar AutoMapper e precisa passar parâmetros bem feios para ele, mas significa em suma que queremos utilizá-lo dentro do assembly dentro do código da nossa aplicação.
+
+[01:56] Então AddAutomapper(AppDomain.CurrentDomain.GetAssemblies()) nós vamos colocar o domínio da nossa aplicação. Nós vamos falar de maneira bem feia que nós estamos utilizando o nosso domínio da nossa aplicação com AutoMapper.
+
+[02:17] Caso ele apareça algum erro, provavelmente porque devem ter de importar a parte do AutoMapper dentro do sistema de vocês; se ele tirar essa parte que diz dependency injection ele vai reclamar em alguns pontos inclusive da parte do IServiceCollection.
+
+[02:34] Então qualquer coisa é só um erro de Import não hesite em usar um “Alt + Enter”, com o nosso AutoMapper inicializado efetivamente precisamos ensinar para ele quais são os tipos que ele deve saber converter no nosso sistema.
+
+[02:52] Nós queremos que seja capaz de converter de filme DTO para filme, de filme para filme DTO, também de filme update filme DTO para filme, precisamos ensinar quais são esses perfis para o AutoMapper criar perfis, nada mais é do que criar uma pastinha para conter esses perfis por questão de organização.
+
+[03:21] Então pastinhas de profiles e dentro dela eu vou criar o nosso filme profile que vai ser a classe responsável por armazenar esses perfis, para cria-los precisa além da boa prática de colocar o sufixo profile, precisa estender a classe profile.
+
+[03:45] Vai reclamar de início, “Alt + Enter”, using AutoMapper, com nosso construtor setor “Tab”, “Tab”, dentro dele vamos criar os métodos que nós queremos. E nós queremos fazer um map de que e para que.
+
+[04:00] Queremos um de CreateMap<CreateFilmeDto> para filme, no final abre e fecha parêntesis, “Alt + Enter” para fazer os imports, queremos converter de filme para um ReadFilmeDto.
+
+[04:24] Por fim queremos converter de um update filme DTO para filme. Basta voltar no nosso filme controller e utilizar AutoMapper, então mais uma vez de maneira bem parecida com nosso contexto nós vamos iniciar o AutoMapper.
+
+[04:44] Que eu vou chamar de _mapper, mas se você quiser pode dar outro nome nesse caso e ele vai ser igual ao Mapper que eu vou receber, o parâmetro no construtor.
+
+[04:53] A injeção de dependência que você está fazendo mais uma vez. Vai receber um IMapper vai chamar de Mapper dentro do nosso Construtor, já colocou, declara o nosso Imapper também vai colocar com o nome de _mapper, “Alt + Enter”, using AutoMapper mais uma vez e nós estamos prontos para utilizar AutoMapper.
+
+[05:20] Eu quero que este filme seja resultado desta conversão e como é que eu converto utilizando AutoMapper? Com create filme DTO para um filme é mais fácil do que isso.
+
+[05:34] Simplesmente, coloca _mapper que é nosso AutoMapper, instância dele, queremos converter ele para um filme a partir de um CreateFilmeDto que o nosso próprio filme que recebemos, nesse momento nós estamos conversando nosso filme DTO para um filme.
+
+[06:00] Estamos guardando na nossa variável filme e seguimos nosso fluxo normalmente, embaixo no http get, nós queremos converter de um filme para um read filmeDTO.
+
+[06:00] Então, ReadFilmeDto filmeDto = _mapper.Map nós queremos converter do para um read filme DTO, o nosso filme, por fim queremos converter do nosso filme DTO para nosso filme.
+
+[06:35] Nesse caso, não queremos converter um objeto para outro tipo. Nós queremos converter dois objetos entre si. Então a sintaxe vai ser idêntica só vai mudar um pouquinho no final _mapper.Map e eu quero converter - ele vai mostrar, ele executa um map.
+
+[06:56] De uma origem para o destino, eu quero transformar o meu filme DTO em um filme, então quero pegar as informações deste filme DTO e jogar no meu filme, assim estou sobrescrevendo esse filme com as informações do meu filme DTO.
+
+[07:14] E ele só consegue fazer isso graças aos profiles, ele não seria capaz de fazer evidência entre quaisquer tipos de objetos e se executar nossa aplicação mais uma vez, voltar no post eu vou criar o star Mapper.
+
+[07:31] Porque estamos utilizando o AutoMapper, ele criou, foi criado com Id dele, se tentar dar um get em todos os filmes, temos o nosso star Mapper, com Id 8, se der get nele nós vamos ter star Mapper também. Olha só que legal.
+
+[07:57] No fim das contas tenta atualizar ele para o nosso star Mapper versão 2 o que que vai acontecer? Ele deu um no contente, bom sinal e se tentar dar um get, star Mapper versão 2.
+
+[08:11] Se tentar deletar, como não mexemos no comportamento dele, o ideal que tudo esteja funcionando. No contente se tentar dar um get no nosso Id 8, not found.
+
+[08:22] O comportamento continua exatamente o mesmo, mas com um código muito mais limpo e enxuto. Quem olhar, consegue ver que quem programou está convertendo filme DTO para filme e guardando na variável.
+
+[08:39] Tudo sem mistério, se tivéssemos feito isso desde o início, teríamos economizado tempo, na questão da escrita. Por este vídeo é só, tornamos nosso código muito mais enxuto, fechamos as quatro operações.
+
+[08:52] Mais elementares, de uma aplicação do dia a dia, onde cria, atualiza, remove e lê os dados, vejo vocês no próximo vídeo, até mais.
+
+
+
+
+
+05 - Faça como eu fiz: Mapeamento
+Com esta atividade, iremos preparar o nosso código para utilizar o AutoMapper. Inicialmente, instale o pacote AutoMapper.Extensions.Microsoft.DependencyInjection na versão 8.1.1.
+
+Tela de pacotes do nuget
+
+Em seguida, dentro de seu Startup, adicione o AutoMapper como um serviço.
+
+public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddDbContext<FilmeContext>(opts => opts.UseMySQL(Configuration.GetConnectionString("FilmeConnection")));
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "FilmesAPI", Version = "v1" });
+            });
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        }COPIAR CÓDIGO
+Crie uma pasta Profiles na raiz de seu projeto. Dentro dela, crie o arquivo FilmeProfile.cs e defina os mapeamentos que utilizaremos.
+
+public class FilmeProfile : Profile
+    {
+        public FilmeProfile()
+        {
+            CreateMap<CreateFilmeDto, Filme>();
+            CreateMap<Filme, ReadFilmeDto>();
+            CreateMap<UpdateFilmeDto, Filme>();
+        }
+    }COPIAR CÓDIGO
+Por fim, em cada uma das rotas do controlador onde é necessário, tente substituir os mapeamentos manuais pelos automáticos com o AutoMapper. Caso tenha dúvidas, consulte o vídeo.
+
+
+
+
+
+
+
+
+06
+Preparando o AutoMapper
+PRÓXIMA ATIVIDADE
+
+Paulo deseja automatizar o processo de mapeamento dentro de sua aplicação. Seu objetivo é fazer o mapeamento automático entre as classes ReadLivroDto e Livro e vice-versa. Como ele deve preparar o seu Profile?
+Alternativa correta
+public class LivroProfile : Profile
+    {
+        public LivroProfile()
+        {
+            CreateMap<ReadLivroDto, Livro>();
+            CreateMap<Livro, ReadLivroDto>();
+        }
+    }
+
+Alternativa correta! Não foi esquecido nenhum detalhe.
+
+
+08 - O que aprendemos?
+Nessa aula aprendemos:
+
+Como tornar o nosso código mais semântico com a utilização de DTO's.
+Como separar o modelo do banco das requisições recebidas e respostas enviadas.
+Como gerar parâmetros de resposta em tempo de execução.
+Como instalar e configurar o AutoMapper.
+Como mapear recursos de maneira automatizada com o AutoMapper.
+
+
+
+09 - Conclusão
+
+[00:00] Pessoal, chegamos no final da primeira parte do nosso Curso de API, com .NET Core, o que vimos?
+
+[00:05] De primário, de importante, entendemos toda a parte de como criar um controlador, entendemos de início o que deve fazer, como declara nossas anotações, utiliza, o que deve estender, como recebe nossas requisições, utilizando anotações de put, get, delete.
+
+[00:25] Toda a primeira parte de suma importância, depois entendemos como persistir dados no banco utilizando DBContext, usamos bibliotecas externas, como por exemplo, EntityFrameworkCore, utilizamos bibliotecas posteriormente como AutoMapper.
+
+[00:40] Para facilitar nosso mapeamento, fizemos diversas dessas utilizações. Aprendemos como modelar um objeto do nosso sistema, para o banco de dados, utilizando as próprias anotações, do CSharp, que posteriormente foram usadas para criar restrições em nossos DTOs.
+
+[01:02] Separamos toda a parte de requisição e resposta do nosso banco, consegue devolver informações para que nosso usuário não tenha de armazená-las no banco. Por exemplo, na parte de read DTO conseguimos calcular informações de tempo de execução para retornar.
+
+[01:18] Sendo toda essa informação no banco, então, graças a essa separação de modelos conseguimos fazer isso. No fim, utilizamos AutoMapper para fazer toda a parte de atribuições de maneira implícita, como configurá-lo, nosso startup.
+
+[01:33] Como cria nosso profile, como utiliza dentro do controlador. Finalizo este Curso, há várias outras questões que pode abordar mais para a frente, veremos com vocês, a parte de segurança.
+
+[01:46] A parte de gerenciar usuário do nosso sistema e outras questões bem interessantes que podemos utilizar, mas vou deixar para vocês verem depois, não vou dar spoiler da nossa parte dois que veremos em breve. Por este vídeo é só, despeço-me de vocês por este Curso, nos vemos em uma próxima e até mais.
